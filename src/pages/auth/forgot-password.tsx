@@ -1,5 +1,10 @@
 import { requestPasswordReset } from "@/services/auth"
-import { Form, useActionData, useNavigation, type ActionFunctionArgs } from "react-router"
+import {
+  Form,
+  useActionData,
+  useNavigation,
+  type ActionFunctionArgs,
+} from "react-router"
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData()

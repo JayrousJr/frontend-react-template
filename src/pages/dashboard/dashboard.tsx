@@ -1,9 +1,13 @@
 import { useState } from "react"
-import { withPermission, withLoading, withErrorBoundary } from "@/hocs"
+import {
+  withRole,
+  withPermission,
+  withLoading,
+  withErrorBoundary,
+} from "@/hocs"
 import type { UserRole } from "@/context/auth-context"
 
 //  card
-
 type StatsCardProps = {
   label: string
   value: string
@@ -52,8 +56,22 @@ function AdminPanel() {
   )
 }
 
-// withPermission — renders null for non-admin users, no redirect
-const AdminOnlyPanel = withPermission(["admin"] as UserRole[])(AdminPanel)
+// withRole — renders null for non-admin users, no redirect
+const AdminOnlyPanel = withRole(["admin"] as UserRole[])(AdminPanel)
+
+// Delete users button — gated on a specific permission rather than a role.
+// Two admins can have different permission sets; checking the capability
+// directly is what actually determines whether the action is safe to show.
+
+function DeleteUsersButton() {
+  return (
+    <button className="rounded-md border border-destructive px-3 py-1.5 text-sm text-destructive">
+      Delete selected users
+    </button>
+  )
+}
+
+const DeleteUsersAction = withPermission(["users:delete"])(DeleteUsersButton)
 
 // Page
 
@@ -79,8 +97,13 @@ const DashboardPage = () => {
         <SafeStatsCard loading={isLoading} label="Open tickets" value="13" />
       </div>
 
-      {/* withPermission — only admins see this */}
+      {/* withRole — only admins see this */}
       <AdminOnlyPanel />
+
+      {/* withPermission — only users holding "users:delete" see this */}
+      <div className="mt-6">
+        <DeleteUsersAction />
+      </div>
     </div>
   )
 }

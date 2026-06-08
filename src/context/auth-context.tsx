@@ -5,11 +5,19 @@ import { ROUTES } from "@/routes/routeConstants"
 
 export type UserRole = "admin" | "user" | "manager"
 
+/**
+ * Fine-grained authorization unit, e.g. "users:delete", "reports:export".
+ * Backend-provided — the frontend only ever checks membership, never derives
+ * permissions from role. Role stays a coarse label for nav/grouping/defaults.
+ */
+export type Permission = string
+
 export type User = {
   id: string
   name: string
   email: string
   role: UserRole
+  permissions: Permission[]
 }
 
 type AuthContextValue = {

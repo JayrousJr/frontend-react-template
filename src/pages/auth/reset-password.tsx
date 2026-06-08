@@ -39,7 +39,12 @@ const ResetPasswordPage = () => {
       <h1>Set new password</h1>
       <Form method="post">
         <input type="hidden" name="token" value={token} />
-        <input type="password" name="password" required placeholder="New password" />
+        <input
+          type="password"
+          name="password"
+          required
+          placeholder="New password"
+        />
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Reset password"}
         </button>

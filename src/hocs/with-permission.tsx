@@ -1,25 +1,32 @@
-import { useAuth, type UserRole } from "@/context/auth-context"
+import { useAuth, type Permission } from "@/context/auth-context"
 import type { ComponentType } from "react"
 
 /**
- * Renders the component only if the current user has one of the allowed roles.
- * Returns null otherwise — no redirect, no error, just hidden.
+ * Renders the component only if the current user holds every permission in
+ * requiredPermissions. Returns null otherwise — no redirect, no error, just
+ * hidden. The finer-grained sibling of withRole: use this when visibility
+ * depends on a specific capability (e.g. "users:delete") rather than a role.
  *
  * Use this for inline UI elements (buttons, menu items, sections).
- * For page-level access control use RoleRoute in the router instead.
+ * For page-level access control use PermissionRoute in the router instead.
  *
  * @example
- * const AdminButton = withPermission(["admin"])(Button)
- * const ManagerAction = withPermission(["admin", "manager"])(DropdownItem)
+ * const DeleteButton = withPermission(["users:delete"])(Button)
+ * const ExportAction = withPermission(["reports:view", "reports:export"])(MenuItem)
  */
 export function withPermission<TProps extends object>(
-  allowedRoles: UserRole[]
+  requiredPermissions: Permission[]
 ) {
   return function (Component: ComponentType<TProps>) {
     const WithPermission = (props: TProps) => {
       const { user } = useAuth()
 
-      if (!user || !allowedRoles.includes(user.role)) {
+      if (
+        !user ||
+        !requiredPermissions.every((permission) =>
+          user.permissions.includes(permission)
+        )
+      ) {
         return null
       }
 
