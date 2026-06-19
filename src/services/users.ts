@@ -1,84 +1,120 @@
 import { gql } from "./api"
+import { GET_USERS } from "./queries"
+import { UPDATE_USER, DELETE_USER } from "./mutations"
 
 // Types
 
-type User = {
-  id: string
+type Role = {
+  uniqueId: string
   name: string
+  description: string
+}
+
+type Permission = {
+  uniqueId: string
+  name: string
+  description: string
+}
+
+type Avatar = {
+  uniqueId: string
+  size: number
+  uri: string
+}
+
+export type User = {
+  uniqueId: string
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
   email: string
-  role: string
+  firstName: string
+  lastName: string
+  role: Role
+  tenantId: string | null
+  permissions: Permission[]
+  allPermissions: Permission[]
+  preferredLocale: string
+  emailVerifiedAt: string | null
+  avatar: Avatar | null
+}
+
+type PaginatedResponse<T> = {
+  data: T[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPrevPage: boolean
+}
+
+type PaginationInput = {
+  page?: number
+  limit?: number
+}
+
+type UserFilterInput = {
+  uniqueId?: string
+  isActive?: boolean
+  name?: string
+}
+
+type UserOrderInput = {
+  field?: string
+  direction?: "ASC" | "DESC"
 }
 
 // Queries
 
-const GET_USERS = `
-  query GetUsers {
-    users {
-      id
-      name
-      email
-      role
-    }
-  }
-`
-
-const GET_USER = `
-  query GetUser($id: ID!) {
-    user(id: $id) {
-      id
-      name
-      email
-      role
-    }
-  }
-`
-
-export async function fetchUsers(): Promise<User[]> {
-  const data = await gql<{ users: User[] }>(GET_USERS)
-  return data.users
+export async function fetchUsers(
+  pagination?: PaginationInput,
+  filter?: UserFilterInput,
+  orderBy?: UserOrderInput
+): Promise<PaginatedResponse<User>> {
+  const data = await gql<
+    { getUsers: PaginatedResponse<User> },
+    { pagination?: PaginationInput; filter?: UserFilterInput; orderBy?: UserOrderInput }
+  >(GET_USERS, { pagination, filter, orderBy })
+  return data.getUsers
 }
 
-export async function fetchUser(id: string): Promise<User> {
-  const data = await gql<{ user: User }, { id: string }>(GET_USER, { id })
-  return data.user
+export async function fetchUser(uniqueId: string): Promise<User> {
+  const data = await gql<
+    { getUsers: PaginatedResponse<User> },
+    { filter: UserFilterInput }
+  >(GET_USERS, { filter: { uniqueId } })
+  return data.getUsers.data[0]
 }
 
-//  Mutations
+// Mutations
 
-const UPDATE_USER = `
-  mutation UpdateUser($id: ID!, $input: UpdateUserInput!) {
-    updateUser(id: $id, input: $input) {
-      id
-      name
-      email
-      role
-    }
-  }
-`
+type UpdateUserInput = {
+  uniqueId: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  preferredLocale?: string
+  avatarUniqueId?: string
+}
 
-const DELETE_USER = `
-  mutation DeleteUser($id: ID!) {
-    deleteUser(id: $id) {
-      id
-    }
-  }
-`
-
-type UpdateUserInput = Partial<Pick<User, "name" | "email">>
+type UserMutationResponse = {
+  message: string
+  data: User
+}
 
 export async function updateUser(
-  id: string,
   input: UpdateUserInput
-): Promise<User> {
+): Promise<UserMutationResponse> {
   const data = await gql<
-    { updateUser: User },
-    { id: string; input: UpdateUserInput }
-  >(UPDATE_USER, { id, input })
+    { updateUser: UserMutationResponse },
+    { updateUserInput: UpdateUserInput }
+  >(UPDATE_USER, { updateUserInput: input })
   return data.updateUser
 }
 
-export async function deleteUser(id: string): Promise<void> {
-  await gql<{ deleteUser: { id: string } }, { id: string }>(DELETE_USER, {
-    id,
+export async function deleteUser(uniqueId: string): Promise<void> {
+  await gql<{ deleteUser: boolean }, { uniqueId: string }>(DELETE_USER, {
+    uniqueId,
   })
 }

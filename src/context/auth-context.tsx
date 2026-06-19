@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
-import { setAccessToken } from "@/services/api"
+import { api, setAccessToken } from "@/services/api"
+import { fetchMe } from "@/services/auth"
 import { ROUTES } from "@/routes/routeConstants"
 
 export type UserRole = "admin" | "user" | "manager"
@@ -13,9 +14,10 @@ export type UserRole = "admin" | "user" | "manager"
 export type Permission = string
 
 export type User = {
-  id: string
-  name: string
+  uniqueId: string
   email: string
+  firstName: string
+  lastName: string
   role: UserRole
   permissions: Permission[]
 }
@@ -24,7 +26,7 @@ type AuthContextValue = {
   isLoading: boolean
   isAuthenticated: boolean
   user: User | null
-  login: (user: User, accessToken?: string) => void
+  login: (accessToken?: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -38,23 +40,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function validateSession() {
       try {
         if (import.meta.env.VITE_AUTH_STRATEGY === "session") {
-          // session based auth
-          const res = await fetch(ROUTES.ME, { credentials: "include" })
-          if (res.ok) setUser(await res.json())
+          await api.get(ROUTES.ME)
+          setUser(await fetchMe())
         } else {
-          // jwt based auth
-          const res = await fetch(ROUTES.REFRESH, {
-            method: "POST",
-            credentials: "include",
-          })
-          if (res.ok) {
-            const { user, accessToken } = await res.json()
-            setAccessToken(accessToken)
-            setUser(user)
-          }
+          const { data } = await api.post<{ accessToken: string }>(
+            ROUTES.REFRESH
+          )
+          setAccessToken(data.accessToken)
+          setUser(await fetchMe())
         }
-      } catch (error) {
-        console.error("Session validation failed:", error)
+      } catch {
+        // No valid session — user stays unauthenticated
       } finally {
         setIsLoading(false)
       }
@@ -63,13 +59,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     void validateSession()
   }, [])
 
-  const login = React.useCallback((nextUser: User, token?: string) => {
-    if (token) setAccessToken(token)
-    setUser(nextUser)
+  const login = React.useCallback(async (accessToken?: string) => {
+    if (accessToken) setAccessToken(accessToken)
+    setUser(await fetchMe())
   }, [])
 
   const logout = React.useCallback(async () => {
-    await fetch("/auth/logout", { method: "POST", credentials: "include" })
+    await api.post("/auth/logout")
     setAccessToken(null)
     setUser(null)
   }, [])

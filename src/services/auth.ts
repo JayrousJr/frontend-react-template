@@ -1,22 +1,83 @@
-// Auth operations go through direct fetch — not the GraphQL gateway.
+import { gql, api } from "./api"
+import { ME } from "./queries"
+import type { User, UserRole } from "@/context/auth-context"
+
+// GraphQL: fetch authenticated user with permissions
+type MeResponse = {
+  me: {
+    uniqueId: string
+    email: string
+    firstName: string
+    lastName: string
+    role: { name: string }
+    allPermissions: { name: string }[]
+  }
+}
+
+export async function fetchMe(): Promise<User> {
+  const data = await gql<MeResponse>(ME)
+  const me = data.me
+  return {
+    uniqueId: me.uniqueId,
+    email: me.email,
+    firstName: me.firstName,
+    lastName: me.lastName,
+    role: me.role.name.toLowerCase() as UserRole,
+    permissions: me.allPermissions.map((p) => p.name),
+  }
+}
+
+// REST auth endpoints (public, no JWT required)
+type LoginResponse = {
+  accessToken: string
+  refreshToken: string
+}
+
+export async function login(
+  email: string,
+  password: string
+): Promise<LoginResponse> {
+  const { data } = await api.post<LoginResponse>("/auth/login", {
+    email,
+    password,
+  })
+  return data
+}
+
+type RegisterResponse = {
+  user: {
+    uniqueId: string
+    email: string
+    firstName: string
+    lastName: string
+  }
+  message: string
+}
+
+export async function register(
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string
+): Promise<RegisterResponse> {
+  const { data } = await api.post<RegisterResponse>("/auth/register", {
+    email,
+    password,
+    firstName,
+    lastName,
+  })
+  return data
+}
+
+// Password flows
 
 export async function requestPasswordReset(email: string): Promise<void> {
-  const res = await fetch("/auth/forgot-password", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  })
-  if (!res.ok) throw new Error("Failed to send reset email")
+  await api.post("/auth/forgot-password", { email })
 }
 
 export async function resetPassword(
   token: string,
   password: string
 ): Promise<void> {
-  const res = await fetch("/auth/reset-password", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, password }),
-  })
-  if (!res.ok) throw new Error("Failed to reset password")
+  await api.post("/auth/reset-password", { token, password })
 }

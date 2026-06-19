@@ -1,4 +1,52 @@
-//   GraphQL Gateway
+import axios from "axios"
+
+//  Axios instances
+
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL as string,
+  withCredentials: true,
+})
+
+export const graphql = axios.create({
+  baseURL: import.meta.env.VITE_GRAPHQL_URL as string,
+  withCredentials: true,
+})
+
+//  Auth strategy (JWT token management)
+
+const AUTH_STRATEGY = import.meta.env.VITE_AUTH_STRATEGY
+
+let accessToken: string | null = null
+
+export function setAccessToken(token: string | null) {
+  accessToken = token
+}
+
+graphql.interceptors.request.use((config) => {
+  if (AUTH_STRATEGY !== "session" && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
+  }
+  return config
+})
+
+api.interceptors.request.use((config) => {
+  if (AUTH_STRATEGY !== "session" && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`
+  }
+  return config
+})
+
+//  Error interceptor: surface backend error messages
+
+api.interceptors.response.use(undefined, (error) => {
+  if (axios.isAxiosError(error) && error.response?.data?.message) {
+    return Promise.reject(new Error(error.response.data.message))
+  }
+  return Promise.reject(error)
+})
+
+//  GraphQL gateway
+
 type GQLError = {
   message: string
   locations?: Array<{ line: number; column: number }>
@@ -11,8 +59,8 @@ type GQLResponse<TData> = {
 }
 
 /**
-Thrown when the server returns a 200 with an errors array.
-Distinguishes GraphQL validation/resolver errors from network failures.
+ * Thrown when the server returns a 200 with a GraphQL errors array.
+ * Distinct from a network/HTTP failure.
  */
 export class GraphQLRequestError extends Error {
   readonly errors: GQLError[]
@@ -24,52 +72,14 @@ export class GraphQLRequestError extends Error {
   }
 }
 
-/** AUTH STRATEGY */
-
-const AUTH_STRATEGY = import.meta.env.VITE_AUTH_STRATEGY
-
-// jwt access token
-let accessToken: string | null = null
-
-// Called from auth-context after login and silent token refresh .
-export function setAccessToken(token: string | null) {
-  accessToken = token
-}
-
-function getCredentials(): Partial<RequestInit> {
-  if (AUTH_STRATEGY === "session") {
-    return { credentials: "include" }
-  }
-  //for jwt auth strategy
-  return accessToken
-    ? { headers: { Authorization: `Bearer ${accessToken}` } }
-    : {}
-}
-
 export async function gql<TData, TVariables = Record<string, unknown>>(
   document: string,
   variables?: TVariables
 ): Promise<TData> {
-  const { headers: authHeaders, ...restCredentials } = getCredentials() as {
-    headers?: Record<string, string>
-    credentials?: RequestCredentials
-  }
-
-  const response = await fetch(import.meta.env.VITE_GRAPHQL_URL as string, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...authHeaders,
-    },
-    body: JSON.stringify({ query: document, variables }),
-    ...restCredentials,
+  const { data: json } = await graphql.post<GQLResponse<TData>>("", {
+    query: document,
+    variables,
   })
-
-  if (!response.ok) {
-    throw new Error(`Network error: ${response.status} ${response.statusText}`)
-  }
-
-  const json = (await response.json()) as GQLResponse<TData>
 
   if (json.errors?.length) {
     throw new GraphQLRequestError(json.errors)
