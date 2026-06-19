@@ -62,7 +62,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Link to={`/${ROUTES.LOGIN}`}>
+          <Link to={ROUTES.LOGIN}>
             <Button className="w-full">Go to login</Button>
           </Link>
         </CardContent>
@@ -142,7 +142,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 <FieldDescription className="px-6 text-center">
                   Already have an account?{" "}
                   <Link
-                    to={`/${ROUTES.LOGIN}`}
+                    to={ROUTES.LOGIN}
                     className="underline underline-offset-4"
                   >
                     Sign in

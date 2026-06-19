@@ -2,7 +2,6 @@
 import * as React from "react"
 import { api, setAccessToken } from "@/services/api"
 import { fetchMe } from "@/services/auth"
-import { ROUTES } from "@/routes/routeConstants"
 
 export type UserRole = "admin" | "user" | "manager"
 
@@ -40,11 +39,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function validateSession() {
       try {
         if (import.meta.env.VITE_AUTH_STRATEGY === "session") {
-          await api.get(ROUTES.ME)
+          await api.get("/auth/me")
           setUser(await fetchMe())
         } else {
           const { data } = await api.post<{ accessToken: string }>(
-            ROUTES.REFRESH
+            "/auth/refresh"
           )
           setAccessToken(data.accessToken)
           setUser(await fetchMe())

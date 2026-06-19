@@ -6,7 +6,7 @@ import DashboardLayout from "@/layouts/dashboard-layout"
 import LandingLayout from "@/layouts/landing-layout"
 import Home from "@/pages/guests/home"
 import { createBrowserRouter, Navigate } from "react-router"
-import { ROUTES } from "./routeConstants"
+import { ROUTES, AUTH_ROUTES } from "./routeConstants"
 import ProtectedRoute from "./protected-route"
 import PublicOnlyRoute from "./public-only-route"
 import RoleRoute from "./role-route"
@@ -45,15 +45,15 @@ export const routes = createBrowserRouter([
         Component: AuthLayout,
         children: [
           {
-            path: ROUTES.LOGIN,
+            path: AUTH_ROUTES.LOGIN,
             lazy: () => lazyPage(() => import("@/pages/auth/login")),
           },
           {
-            path: ROUTES.REGISTER,
+            path: AUTH_ROUTES.REGISTER,
             lazy: () => lazyPage(() => import("@/pages/auth/register")),
           },
           {
-            path: ROUTES.FORGOT_PASSWORD,
+            path: AUTH_ROUTES.FORGOT_PASSWORD,
             lazy: async () => {
               const { default: Component, action } =
                 await import("@/pages/auth/forgot-password")
@@ -61,7 +61,7 @@ export const routes = createBrowserRouter([
             },
           },
           {
-            path: ROUTES.RESET_PASSWORD,
+            path: AUTH_ROUTES.RESET_PASSWORD,
             lazy: async () => {
               const { default: Component, action } =
                 await import("@/pages/auth/reset-password")
