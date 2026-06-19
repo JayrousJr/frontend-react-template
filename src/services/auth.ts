@@ -11,12 +11,16 @@ type MeResponse = {
     lastName: string
     role: { name: string }
     allPermissions: { name: string }[]
+    avatar: { uri: string } | null
   }
 }
+
+const API_URL = import.meta.env.VITE_API_URL as string
 
 export async function fetchMe(): Promise<User> {
   const data = await gql<MeResponse>(ME)
   const me = data.me
+
   return {
     uniqueId: me.uniqueId,
     email: me.email,
@@ -24,6 +28,9 @@ export async function fetchMe(): Promise<User> {
     lastName: me.lastName,
     role: me.role.name.toLowerCase() as UserRole,
     permissions: me.allPermissions.map((p) => p.name),
+    avatar: me.avatar
+      ? `/files/download/${me.avatar.uri.replace(/^\//, "")}`
+      : null,
   }
 }
 

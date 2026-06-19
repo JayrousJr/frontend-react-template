@@ -17,9 +17,18 @@ export const graphql = axios.create({
 const AUTH_STRATEGY = import.meta.env.VITE_AUTH_STRATEGY
 
 let accessToken: string | null = null
+let refreshToken: string | null = null
 
 export function setAccessToken(token: string | null) {
   accessToken = token
+}
+
+export function setRefreshToken(token: string | null) {
+  refreshToken = token
+}
+
+export function getRefreshToken() {
+  return refreshToken
 }
 
 graphql.interceptors.request.use((config) => {

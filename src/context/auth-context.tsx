@@ -1,10 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
-import { api, setAccessToken } from "@/services/api"
+import {
+  api,
+  setAccessToken,
+  setRefreshToken,
+  getRefreshToken,
+} from "@/services/api"
 import { fetchMe } from "@/services/auth"
 
 export type UserRole = "admin" | "user" | "manager"
-
 /**
  * Fine-grained authorization unit, e.g. "users.delete", "products.read".
  * Backend-provided — the frontend only ever checks membership, never derives
@@ -19,13 +23,14 @@ export type User = {
   lastName: string
   role: UserRole
   permissions: Permission[]
+  avatar: string | null
 }
 
 type AuthContextValue = {
   isLoading: boolean
   isAuthenticated: boolean
   user: User | null
-  login: (accessToken?: string) => Promise<void>
+  login: (accessToken: string, refreshToken: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -42,10 +47,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           await api.get("/auth/me")
           setUser(await fetchMe())
         } else {
-          const { data } = await api.post<{ accessToken: string }>(
-            "/auth/refresh"
-          )
+          const stored = getRefreshToken()
+          if (!stored) return
+          const { data } = await api.post<{
+            accessToken: string
+            refreshToken: string
+          }>("/auth/refresh", { refreshToken: stored })
           setAccessToken(data.accessToken)
+          setRefreshToken(data.refreshToken)
           setUser(await fetchMe())
         }
       } catch {
@@ -58,14 +67,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     void validateSession()
   }, [])
 
-  const login = React.useCallback(async (accessToken?: string) => {
-    if (accessToken) setAccessToken(accessToken)
-    setUser(await fetchMe())
-  }, [])
+  const login = React.useCallback(
+    async (accessToken: string, refreshToken: string) => {
+      setAccessToken(accessToken)
+      setRefreshToken(refreshToken)
+      setUser(await fetchMe())
+    },
+    []
+  )
 
   const logout = React.useCallback(async () => {
-    await api.post("/auth/logout")
+    const stored = getRefreshToken()
+    if (stored) await api.post("/auth/logout", { refreshToken: stored })
     setAccessToken(null)
+    setRefreshToken(null)
     setUser(null)
   }, [])
 

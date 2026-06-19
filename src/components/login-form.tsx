@@ -39,8 +39,8 @@ export function LoginForm({
     const password = formData.get("password") as string
 
     try {
-      const { accessToken } = await login(email, password)
-      await authLogin(accessToken)
+      const { accessToken, refreshToken } = await login(email, password)
+      await authLogin(accessToken, refreshToken)
       navigate(ROUTES.DASHBOARD, { replace: true })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed")

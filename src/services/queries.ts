@@ -7,6 +7,11 @@ query Me {
     lastName
     role { name }
     allPermissions { name }
+     avatar {
+      uniqueId
+      size
+      uri
+    }
   }
 }`
 
