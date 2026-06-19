@@ -109,7 +109,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="user@example.com"
                 required
               />
             </Field>
@@ -131,9 +131,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 required
               />
             </Field>
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
             <FieldGroup>
               <Field>
                 <Button type="submit" disabled={isSubmitting}>

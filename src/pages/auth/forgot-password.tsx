@@ -71,7 +71,7 @@ const ForgotPasswordPage = () => {
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="user@example.com"
                       required
                     />
                     {actionData?.error && (
