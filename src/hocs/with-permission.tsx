@@ -11,8 +11,8 @@ import type { ComponentType } from "react"
  * For page-level access control use PermissionRoute in the router instead.
  *
  * @example
- * const DeleteButton = withPermission(["users:delete"])(Button)
- * const ExportAction = withPermission(["reports:view", "reports:export"])(MenuItem)
+ * const DeleteButton = withPermission(["users.delete"])(Button)
+ * const ExportAction = withPermission(["analytics.read"])(MenuItem)
  */
 export function withPermission<TProps extends object>(
   requiredPermissions: Permission[]

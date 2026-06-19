@@ -71,7 +71,7 @@ function DeleteUsersButton() {
   )
 }
 
-const DeleteUsersAction = withPermission(["users:delete"])(DeleteUsersButton)
+const DeleteUsersAction = withPermission(["users.delete"])(DeleteUsersButton)
 
 // Page
 
