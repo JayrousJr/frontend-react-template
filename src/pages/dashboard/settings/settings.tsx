@@ -6,7 +6,13 @@ import SessionsTab from "./sessions-tab"
 import RolePermissionsTab from "./role-permissions-tab"
 import NotificationsTab from "./notifications-tab"
 
-const TABS = ["profile", "password", "notifications", "sessions", "role-permissions"] as const
+const TABS = [
+  "profile",
+  "password",
+  "notifications",
+  "sessions",
+  "role-permissions",
+] as const
 
 const SettingsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()

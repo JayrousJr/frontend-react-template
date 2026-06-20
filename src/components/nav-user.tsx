@@ -85,11 +85,11 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate(ROUTES.SETTINGS)}>
                 <BadgeCheckIcon />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate(`${ROUTES.SETTINGS}?tab=notifications`)}>
                 <BellIcon />
                 Notifications
               </DropdownMenuItem>

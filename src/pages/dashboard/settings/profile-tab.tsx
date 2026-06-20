@@ -27,11 +27,11 @@ import {
   uploadAvatar,
   type Profile,
 } from "@/services/account"
-import { fetchMe } from "@/services/auth"
 import { UploadIcon } from "lucide-react"
+import { fetchMe } from "@/services/auth"
 
 const ProfileTab = () => {
-  const { user, login } = useAuth()
+  const { user, refreshUser } = useAuth()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [locales, setLocales] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -79,7 +79,7 @@ const ProfileTab = () => {
         avatarUniqueId,
       })
       const updatedUser = await fetchMe()
-      await login(updatedUser)
+      await refreshUser()
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)
     } catch {
@@ -104,7 +104,7 @@ const ProfileTab = () => {
         preferredLocale,
       })
       const updatedUser = await fetchMe()
-      await login(updatedUser)
+      await refreshUser()
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
@@ -208,13 +208,20 @@ const ProfileTab = () => {
               </div>
               <div className="flex items-center gap-6">
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src={avatarSrc} alt={`${firstName} ${lastName}`} />
-                  <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+                  <AvatarImage
+                    src={avatarSrc}
+                    alt={`${firstName} ${lastName}`}
+                  />
+                  <AvatarFallback className="text-lg">
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
                 <label className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-dashed px-6 py-4 text-sm text-muted-foreground transition-colors hover:border-foreground/50 hover:text-foreground">
                   <UploadIcon className="size-5" />
                   <span>Click to upload</span>
-                  <span className="text-xs">SVG, PNG or JPG (max. 800x400px)</span>
+                  <span className="text-xs">
+                    SVG, PNG or JPG (max. 800x400px)
+                  </span>
                   <input
                     type="file"
                     className="hidden"

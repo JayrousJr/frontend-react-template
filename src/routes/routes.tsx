@@ -100,6 +100,13 @@ export const routes = createBrowserRouter([
             lazy: () =>
               lazyPage(() => import("@/pages/dashboard/users/user-details")),
           },
+          {
+            path: ROUTES.SETTINGS,
+            lazy: () =>
+              lazyPage(
+                () => import("@/pages/dashboard/settings/settings")
+              ),
+          },
         ],
       },
 
