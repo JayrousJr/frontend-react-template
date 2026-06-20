@@ -291,3 +291,7 @@ query GetAllPermissions {
     description
   }
 }`
+export const SUPPORTED_LOCALES = `
+query Query {
+  getSupportedLocales
+}`
