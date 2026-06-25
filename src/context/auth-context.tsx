@@ -80,8 +80,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = React.useCallback(async () => {
     const stored = getRefreshToken()
     if (stored) await api.post("/auth/logout", { refreshToken: stored })
-    setAccessToken(null)
-    setRefreshToken(null)
+    setAccessToken("")
+    setRefreshToken("")
     setUser(null)
   }, [])
 

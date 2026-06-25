@@ -16,22 +16,23 @@ export const graphql = axios.create({
 
 const AUTH_STRATEGY = import.meta.env.VITE_AUTH_STRATEGY
 
-let accessToken: string | null = null
-let refreshToken: string | null = null
-
-export function setAccessToken(token: string | null) {
-  accessToken = token
+export function setAccessToken(token: string) {
+  // accessToken = token
+  localStorage.setItem("accessToken", token)
 }
 
-export function setRefreshToken(token: string | null) {
-  refreshToken = token
+export function setRefreshToken(token: string) {
+  // refreshToken = token
+  localStorage.setItem("refreshToken", token)
 }
 
 export function getRefreshToken() {
-  return refreshToken
+  // return refreshTokennull
+  return localStorage.getItem("refreshToken")
 }
 
 graphql.interceptors.request.use((config) => {
+  let accessToken: string | null = localStorage.getItem("accessToken")
   if (AUTH_STRATEGY !== "session" && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
   }
@@ -39,6 +40,7 @@ graphql.interceptors.request.use((config) => {
 })
 
 api.interceptors.request.use((config) => {
+  let accessToken: string | null = localStorage.getItem("accessToken")
   if (AUTH_STRATEGY !== "session" && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
   }
