@@ -96,14 +96,15 @@ const ProfileTab = () => {
     setIsSaving(true)
 
     try {
-      await updateProfile({
+      const res = await updateProfile({
         uniqueId: profile.uniqueId,
         firstName,
         lastName,
         email,
         preferredLocale,
       })
-      const updatedUser = await fetchMe()
+
+      await fetchMe()
       await refreshUser()
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)

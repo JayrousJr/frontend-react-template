@@ -104,9 +104,7 @@ type UpdateProfileInput = {
   avatarUniqueId?: string
 }
 
-export async function updateProfile(
-  input: UpdateProfileInput
-): Promise<void> {
+export async function updateProfile(input: UpdateProfileInput): Promise<any> {
   await gql(UPDATE_USER, { updateUserInput: input })
 }
 
