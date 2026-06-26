@@ -37,6 +37,7 @@ export function LoginForm({
     try {
       const { accessToken, refreshToken } = await login(email, password)
       await authLogin(accessToken, refreshToken)
+
       navigate(ROUTES.DASHBOARD, { replace: true })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed")
@@ -130,7 +131,8 @@ export function LoginForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <a href="#">Sign up</a>
+                Don&apos;t have an account?{" "}
+                <Link to={ROUTES.REGISTER}>Sign up</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
