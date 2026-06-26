@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/context/auth-context"
 import { login } from "@/services/auth"
 import { ROUTES } from "@/routes/routeConstants"
-import { logo } from "@/lib/exports"
+import { APP_NAME, logo } from "@/lib/exports"
 
 export function LoginForm({
   className,
@@ -45,7 +45,6 @@ export function LoginForm({
       setIsSubmitting(false)
     }
   }
-  const APP_NAME = import.meta.env.VITE_APP_NAME as string
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
