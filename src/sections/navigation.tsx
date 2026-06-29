@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTheme } from "@/components/theme-provider"
-import { resolveImageUrl } from "@/lib/format"
 import { useAuthenticatedImage } from "@/hooks/use-authenticated-image"
 
 export default function Navigation() {
