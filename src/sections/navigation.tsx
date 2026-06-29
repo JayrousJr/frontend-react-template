@@ -39,6 +39,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTheme } from "@/components/theme-provider"
+import { resolveImageUrl } from "@/lib/format"
+import { useAuthenticatedImage } from "@/hooks/use-authenticated-image"
 
 export default function Navigation() {
   const { isAuthenticated, user, logout } = useAuth()
@@ -264,11 +266,13 @@ function UserAvatar({ size = "sm", user }: { size?: "sm" | "md"; user: User }) {
     ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase()
     : "?"
   const px = size === "sm" ? "h-8 w-8 text-xs" : "h-10 w-10 text-sm"
-  console.log(user)
 
   return (
     <Avatar className={px}>
-      <AvatarImage src={user?.avatar ?? undefined} alt={user?.firstName} />
+      <AvatarImage
+        src={useAuthenticatedImage(user?.avatar) ?? undefined}
+        alt={user?.firstName}
+      />
       <AvatarFallback className="bg-primary font-semibold text-primary-foreground">
         {initials}
       </AvatarFallback>
