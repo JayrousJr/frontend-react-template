@@ -1,4 +1,11 @@
-import { MenuIcon, LayoutDashboard, LogOut, Sun, Moon } from "lucide-react"
+import {
+  MenuIcon,
+  LayoutDashboard,
+  LogOut,
+  Sun,
+  Moon,
+  Loader,
+} from "lucide-react"
 import {
   Sheet,
   SheetClose,
@@ -32,6 +39,7 @@ import { useAuth, type User } from "@/context/auth-context"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -40,8 +48,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTheme } from "@/components/theme-provider"
 import { useAuthenticatedImage } from "@/hooks/use-authenticated-image"
-
+import { useTranslation } from "react-i18next"
+import { fetchSupportedLocales } from "@/services/account"
+import { useEffect, useState } from "react"
+import Flag from "react-flagpack"
+import { Loading } from "@/components/loading-page"
 export default function Navigation() {
+  const [locales, setLocale] = useState<string[]>([])
   const { isAuthenticated, user, logout } = useAuth()
   const navigate = useNavigate()
   async function handleLogout() {
@@ -49,9 +62,20 @@ export default function Navigation() {
     navigate(ROUTES.HOME, { replace: true })
   }
   const { setTheme, theme } = useTheme()
+  const { t } = useTranslation()
+  useEffect(() => {
+    async function load() {
+      try {
+        const [localeData] = await Promise.all([fetchSupportedLocales()])
+        setLocale(localeData)
+      } catch (error) {}
+    }
+    void load()
+  }, [])
+  console.log(locales)
 
   return (
-    <div className="relative min-h-[70vh] w-full px-4">
+    <div className="relative my-4 h-full w-full px-4">
       <div
         aria-hidden="true"
         className={cn(
@@ -61,7 +85,7 @@ export default function Navigation() {
         )}
       />
 
-      <div className="sticky top-1/30 z-50 mx-auto h-14 w-full max-w-4xl rounded-lg border bg-background px-4">
+      <div className="sticky top-1/30 z-50 mx-auto h-14 w-full max-w-7xl rounded-lg border bg-background px-4">
         <div className="flex h-full items-center justify-between">
           <div className="flex items-center gap-2">
             <img src={logo} className="w-10" />{" "}
@@ -70,6 +94,25 @@ export default function Navigation() {
           <DesktopMenu />
 
           <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  {user ? user?.preferredLocale : <Loading size="sm" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {locales.map((item) => (
+                  <>
+                    <DropdownMenuGroup key={item}>
+                      <DropdownMenuItem>
+                        <Flag code="528" />
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </DropdownMenuGroup>
+                  </>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button
               variant="outline"
               size="icon"
@@ -99,7 +142,7 @@ export default function Navigation() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                     <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
+                    {t("profile.dashboard")}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -107,7 +150,7 @@ export default function Navigation() {
                     className="text-red-600 focus:text-red-600"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
+                    {t("profile.logout")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

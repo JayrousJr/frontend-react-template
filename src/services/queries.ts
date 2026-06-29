@@ -6,6 +6,7 @@ query Me {
     firstName
     lastName
     role { name }
+    preferredLocale
     allPermissions { name }
      avatar {
       uniqueId

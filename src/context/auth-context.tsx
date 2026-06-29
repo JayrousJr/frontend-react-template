@@ -7,6 +7,7 @@ import {
   getRefreshToken,
 } from "@/services/api"
 import { fetchMe } from "@/services/auth"
+import i18next from "i18next"
 
 export type UserRole = "admin" | "user" | "manager"
 /**
@@ -24,6 +25,7 @@ export type User = {
   role: UserRole
   permissions: Permission[]
   avatar: string | null
+  preferredLocale?: string
 }
 
 type AuthContextValue = {
@@ -40,6 +42,11 @@ const AuthContext = React.createContext<AuthContextValue | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = React.useState(true)
   const [user, setUser] = React.useState<User | null>(null)
+
+  // make the default locale to define the lannguage of the user logged in
+  React.useEffect(() => {
+    if (user?.preferredLocale) i18next.changeLanguage(user.preferredLocale)
+  }, [user])
 
   React.useEffect(() => {
     async function validateSession() {

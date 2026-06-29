@@ -12,6 +12,7 @@ type MeResponse = {
     role: { name: string }
     allPermissions: { name: string }[]
     avatar: { uri: string } | null
+    preferredLocale: string
   }
 }
 export type ErrorResponse = {
@@ -37,6 +38,7 @@ export async function fetchMe(): Promise<User> {
     avatar: me.avatar
       ? `/files/download/${me.avatar.uri.replace(/^\//, "")}`
       : null,
+    preferredLocale: me.preferredLocale,
   }
 }
 
