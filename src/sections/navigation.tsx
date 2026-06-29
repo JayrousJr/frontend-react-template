@@ -39,7 +39,6 @@ import { useAuth, type User } from "@/context/auth-context"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -49,12 +48,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTheme } from "@/components/theme-provider"
 import { useAuthenticatedImage } from "@/hooks/use-authenticated-image"
 import { useTranslation } from "react-i18next"
-import { fetchSupportedLocales } from "@/services/account"
-import { useEffect, useState } from "react"
-import Flag from "react-flagpack"
-import { Loading } from "@/components/loading-page"
+import LanguageSwitcher from "@/components/languageSwitcher"
+
 export default function Navigation() {
-  const [locales, setLocale] = useState<string[]>([])
   const { isAuthenticated, user, logout } = useAuth()
   const navigate = useNavigate()
   async function handleLogout() {
@@ -63,16 +59,6 @@ export default function Navigation() {
   }
   const { setTheme, theme } = useTheme()
   const { t } = useTranslation()
-  useEffect(() => {
-    async function load() {
-      try {
-        const [localeData] = await Promise.all([fetchSupportedLocales()])
-        setLocale(localeData)
-      } catch (error) {}
-    }
-    void load()
-  }, [])
-  console.log(locales)
 
   return (
     <div className="relative my-4 h-full w-full px-4">
@@ -94,25 +80,7 @@ export default function Navigation() {
           <DesktopMenu />
 
           <div className="flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  {user ? user?.preferredLocale : <Loading size="sm" />}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {locales.map((item) => (
-                  <>
-                    <DropdownMenuGroup key={item}>
-                      <DropdownMenuItem>
-                        <Flag code="528" />
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </DropdownMenuGroup>
-                  </>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <LanguageSwitcher user={user} />
             <Button
               variant="outline"
               size="icon"
