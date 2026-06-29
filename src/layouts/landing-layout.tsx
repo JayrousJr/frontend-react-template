@@ -1,5 +1,5 @@
 import Footer from "@/sections/footer"
-import { Navigation } from "@/sections/navigation"
+import Navigation from "@/sections/navigation"
 import { Outlet } from "react-router"
 
 const LandingLayout = () => {

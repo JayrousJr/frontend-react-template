@@ -1,7 +1,127 @@
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react"
+import type { NavItemType } from "@/components/ui/navigation-menu"
+import {
+  BarChart,
+  CodeIcon,
+  DollarSign,
+  Facebook,
+  FileText,
+  Github,
+  GlobeIcon,
+  Handshake,
+  HelpCircle,
+  Instagram,
+  LayersIcon,
+  Leaf,
+  Linkedin,
+  PlugIcon,
+  RotateCcw,
+  Shield,
+  Star,
+  Twitter,
+  UserPlusIcon,
+  Users,
+  Youtube,
+} from "lucide-react"
 
 export const logo = "../logo.png"
 export const APP_NAME = import.meta.env.VITE_APP_NAME as string
+
+export const productLinks: NavItemType[] = [
+  {
+    title: "Website Builder",
+    href: "#",
+    description: "Create responsive websites with ease",
+    icon: GlobeIcon,
+  },
+  {
+    title: "Cloud Platform",
+    href: "#",
+    description: "Deploy and scale apps in the cloud",
+    icon: LayersIcon,
+  },
+  {
+    title: "Team Collaboration",
+    href: "#",
+    description: "Tools to help your teams work better together",
+    icon: UserPlusIcon,
+  },
+  {
+    title: "Analytics",
+    href: "#",
+    icon: BarChart,
+  },
+  {
+    title: "Integrations",
+    href: "#",
+    icon: PlugIcon,
+  },
+  {
+    title: "E-Commerce",
+    href: "#",
+    icon: DollarSign,
+  },
+  {
+    title: "Security",
+    href: "#",
+    icon: Shield,
+  },
+  {
+    title: "API",
+    href: "#",
+    icon: CodeIcon,
+  },
+]
+
+export const companyLinks: NavItemType[] = [
+  {
+    title: "About Us",
+    href: "#",
+    description: "Learn more about our story and team",
+    icon: Users,
+  },
+  {
+    title: "Customer Stories",
+    href: "#",
+    description: "See how we’ve helped our clients succeed",
+    icon: Star,
+  },
+  {
+    title: "Terms of Service",
+    href: "#",
+    description: "Understand how we operate",
+    icon: FileText,
+  },
+  {
+    title: "Privacy Policy",
+    href: "#",
+    description: "How we protect your information",
+    icon: Shield,
+  },
+  {
+    title: "Refund Policy",
+    href: "#",
+    description: "Details about refunds and cancellations",
+    icon: RotateCcw,
+  },
+  {
+    title: "Partnerships",
+    href: "#",
+    icon: Handshake,
+    description: "Collaborate with us for mutual growth",
+  },
+  {
+    title: "Blog",
+    href: "#",
+    icon: Leaf,
+    description: "Insights, tutorials, and company news",
+  },
+  {
+    title: "Help Center",
+    href: "#",
+    icon: HelpCircle,
+    description: "Find answers to your questions",
+  },
+]
 
 export const footerDetails = {
   foterLinks: [
@@ -91,24 +211,27 @@ export const footerDetails = {
       color: "text-blue-600",
     },
     {
+      name: "github",
+      active: true,
+      url: "#",
+      icon: Github,
+      color: "text-primary",
+    },
+    {
       name: "linkedin",
       active: true,
       url: "#",
       icon: Linkedin,
+      color: "text-primary",
     },
     {
       name: "twitter",
-      active: false,
+      active: true,
       url: "#",
       icon: Twitter,
       color: "text-blue-600",
     },
-    {
-      name: "tiktok",
-      active: false,
-      url: "#",
-      icon: "",
-      color: "text-black",
-    },
   ],
+  footerParagraph:
+    "PrebuiltUI helps you build faster by transforming your design vision into fully functional, production-ready UI components.",
 }

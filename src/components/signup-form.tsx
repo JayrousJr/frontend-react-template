@@ -190,11 +190,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </FieldGroup>
           </form>
           <div className="relative hidden bg-muted md:block">
-            <img
-              src={logo}
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
+            <Link to={ROUTES.HOME}>
+              <img
+                src={logo}
+                alt="Image"
+                className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              />
+            </Link>
           </div>
         </CardContent>
       </Card>

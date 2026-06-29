@@ -21,9 +21,9 @@ async function lazyPage(importFn: () => Promise<{ default: ComponentType }>) {
 /** Root index: authenticated users skip the landing page and go straight to the app. */
 // eslint-disable-next-line react-refresh/only-export-components
 function RootIndex() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isLoading } = useAuth()
   if (isLoading) return <LoadingPage />
-  if (isAuthenticated) return <Navigate to={ROUTES.DASHBOARD} replace />
+  // if (isAuthenticated) return <Navigate to={ROUTES.DASHBOARD} replace />
   return <Home />
 }
 
@@ -103,9 +103,7 @@ export const routes = createBrowserRouter([
           {
             path: ROUTES.SETTINGS,
             lazy: () =>
-              lazyPage(
-                () => import("@/pages/dashboard/settings/settings")
-              ),
+              lazyPage(() => import("@/pages/dashboard/settings/settings")),
           },
         ],
       },

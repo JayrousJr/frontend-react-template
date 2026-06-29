@@ -103,7 +103,9 @@ type UpdateProfileInput = {
   preferredLocale?: string
   avatarUniqueId?: string
 }
-
+type Subscription = {
+  subscribeToNewsletter: { message: string }
+}
 export async function updateProfile(input: UpdateProfileInput): Promise<any> {
   await gql(UPDATE_USER, { updateUserInput: input })
 }
@@ -119,12 +121,12 @@ export async function revokeSession(uniqueId: string): Promise<void> {
   await gql(REVOKE_SESSION, { uniqueId })
 }
 
-export async function subscribeToNewsletter(): Promise<void> {
-  await gql(SUBSCRIBE_TO_NEWSLETTER)
+export async function subscribeToNewsletter(): Promise<Subscription> {
+  return await gql(SUBSCRIBE_TO_NEWSLETTER)
 }
 
-export async function unsubscribeFromNewsletter(): Promise<void> {
-  await gql(UNSUBSCRIBE_FROM_NEWSLETTER)
+export async function unsubscribeFromNewsletter(): Promise<Subscription> {
+  return await gql(UNSUBSCRIBE_FROM_NEWSLETTER)
 }
 
 export async function uploadAvatar(file: File): Promise<{ uniqueId: string }> {

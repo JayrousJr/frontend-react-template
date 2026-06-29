@@ -1,95 +1,197 @@
-"use client"
-
-import * as React from "react"
-
+import { MenuIcon, LayoutDashboard, LogOut, Sun, Moon } from "lucide-react"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuItem,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+  NavigationMenuLink,
+  NavGridCard,
+  NavSmallItem,
+  NavLargeItem,
+  NavItemMobile,
 } from "@/components/ui/navigation-menu"
-import { Link } from "react-router"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { cn } from "@/lib/utils"
+import { APP_NAME, companyLinks, logo, productLinks } from "@/lib/exports"
+import { useNavigate } from "react-router"
+import { ROUTES } from "@/routes/routeConstants"
+import { useAuth, type User } from "@/context/auth-context"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useTheme } from "@/components/theme-provider"
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-]
+export default function Navigation() {
+  const { isAuthenticated, user, logout } = useAuth()
+  const navigate = useNavigate()
+  async function handleLogout() {
+    await logout()
+    navigate(ROUTES.HOME, { replace: true })
+  }
+  const { setTheme, theme } = useTheme()
 
-function NavigationLinks() {
   return (
-    <NavigationMenu>
+    <div className="relative min-h-[70vh] w-full px-4">
+      <div
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 -z-10 size-full",
+          //   "bg-[radial-gradient(color-mix(in_oklab,--theme(--color-foreground/.2)30%,transparent)_2px,transparent_2px)]",
+          "bg-size-[12px_12px]"
+        )}
+      />
+
+      <div className="sticky top-1/30 z-50 mx-auto h-14 w-full max-w-4xl rounded-lg border bg-background px-4">
+        <div className="flex h-full items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img src={logo} className="w-10" />{" "}
+            <p className="font-mono text-lg font-bold">{APP_NAME}</p>
+          </div>
+          <DesktopMenu />
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setTheme(theme == "light" ? "dark" : "light")}
+              className="cursor-pointer"
+            >
+              <Sun className="h-[1.2rem] w-[1.2rem] scale-0 rotate-0 transition-all dark:scale-100 dark:-rotate-90" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-100 rotate-90 transition-all dark:scale-0 dark:rotate-0" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="hidden rounded-full ring-2 ring-transparent transition-all hover:ring-primary/30 focus:outline-none md:flex">
+                    <UserAvatar size="sm" user={user!} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-52">
+                  <DropdownMenuLabel className="font-normal">
+                    <p className="text-sm leading-none font-semibold">
+                      {user?.firstName} {user?.lastName}
+                    </p>
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                      {user?.email}
+                    </p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="hidden items-center gap-2 md:flex">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  Sign In
+                </Button>
+                {/* <Button size="sm" onClick={() => navigate("/auth/register")}>
+                  Get Started
+                </Button> */}
+              </div>
+            )}
+            <MobileView />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DesktopMenu() {
+  return (
+    <NavigationMenu className="hidden lg:block">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Product</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="w-96">
-              <ListItem href="/docs" title="Introduction">
-                Re-usable components built with Tailwind CSS.
-              </ListItem>
-              <ListItem href="/docs/installation" title="Installation">
-                How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Typography">
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:flex">
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-100 gap-2 md:w-125 md:grid-cols-2 lg:w-150">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
+            <div className="grid w-full md:w-4xl md:grid-cols-[1fr_.30fr]">
+              <ul className="grid grow gap-4 p-4 md:grid-cols-3 md:border-r">
+                {productLinks.slice(0, 3).map((link) => (
+                  <li key={link.href}>
+                    <NavGridCard link={link} />
+                  </li>
+                ))}
+              </ul>
+              <ul className="space-y-1 p-4">
+                {productLinks.slice(3).map((link) => (
+                  <li key={link.href}>
+                    <NavSmallItem
+                      item={link}
+                      href={link.href}
+                      className="gap-x-1"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link to="/docs">Docs</Link>
+          <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <div className="grid w-full md:w-4xl md:grid-cols-[1fr_.40fr]">
+              <ul className="grid grow grid-cols-2 gap-4 p-4 md:border-r">
+                {companyLinks.slice(0, 2).map((link) => (
+                  <li key={link.href}>
+                    <NavGridCard link={link} className="min-h-36" />
+                  </li>
+                ))}
+                <div className="col-span-2 grid grid-cols-3 gap-x-4">
+                  {companyLinks.slice(2, 5).map((link) => (
+                    <li key={link.href}>
+                      <NavLargeItem href={link.href} link={link} />
+                    </li>
+                  ))}
+                </div>
+              </ul>
+              <ul className="space-y-2 p-4">
+                {companyLinks.slice(5, 10).map((link) => (
+                  <li key={link.href}>
+                    <NavLargeItem href={link.href} link={link} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink className="cursor-pointer">
+            Pricing
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
@@ -97,30 +199,79 @@ function NavigationLinks() {
   )
 }
 
-function ListItem({
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+function MobileView() {
+  const sections = [
+    {
+      id: "product",
+      name: "Product",
+      list: productLinks,
+    },
+    {
+      id: "company",
+      name: "Company",
+      list: companyLinks,
+    },
+  ]
+
   return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link to={href}>
-          <div className="flex flex-col gap-1 text-sm">
-            <div className="leading-none font-medium">{title}</div>
-            <div className="line-clamp-2 text-muted-foreground">{children}</div>
-          </div>
-        </Link>
-      </NavigationMenuLink>
-    </li>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button size="icon" variant="ghost" className="rounded-full lg:hidden">
+          <MenuIcon className="size-5" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        className="w-full gap-0 bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/80"
+        showClose={false}
+      >
+        <div className="flex h-14 items-center justify-end border-b px-4">
+          <SheetClose asChild>
+            <Button size="icon" variant="ghost" className="rounded-full">
+              {/* <XIcon className="size-5" /> */}
+              <span className="sr-only">Close</span>
+            </Button>
+          </SheetClose>
+        </div>
+        <div className="container grid gap-y-2 overflow-y-auto px-4 pt-5 pb-12">
+          <Accordion type="single" collapsible>
+            {sections.map((section) => (
+              <AccordionItem key={section.id} value={section.id}>
+                <AccordionTrigger className="capitalize hover:no-underline">
+                  {section.id}
+                </AccordionTrigger>
+                <AccordionContent className="space-y-1">
+                  <ul className="grid gap-1">
+                    {section.list.map((link) => (
+                      <li key={link.href}>
+                        <SheetClose asChild>
+                          <NavItemMobile item={link} href={link.href} />
+                        </SheetClose>
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </SheetContent>
+    </Sheet>
   )
 }
 
-export function Navigation() {
+function UserAvatar({ size = "sm", user }: { size?: "sm" | "md"; user: User }) {
+  const initials = user
+    ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase()
+    : "?"
+  const px = size === "sm" ? "h-8 w-8 text-xs" : "h-10 w-10 text-sm"
+  console.log(user)
+
   return (
-    <div className="container mx-auto">
-      <NavigationLinks />
-    </div>
+    <Avatar className={px}>
+      <AvatarImage src={user?.avatar ?? undefined} alt={user?.firstName} />
+      <AvatarFallback className="bg-primary font-semibold text-primary-foreground">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
   )
 }

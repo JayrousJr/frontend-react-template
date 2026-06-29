@@ -1,4 +1,4 @@
-// -- Auth (GraphQL) --
+//  Auth (GraphQL)
 
 export const REGISTER_USER = `
 mutation RegisterUser($registerUserInput: RegisterUserInput!) {
@@ -45,7 +45,7 @@ mutation RevokeSession($uniqueId: String!) {
   revokeSession(uniqueId: $uniqueId)
 }`
 
-// -- Users --
+//  Users
 
 export const CREATE_USER = `
 mutation CreateUser($createUserInput: CreateUserInput!) {
@@ -132,7 +132,7 @@ mutation SetUserPermissions($setUserPermissionsInput: SetUserPermissionsInput!) 
   }
 }`
 
-// -- Roles --
+//  Roles
 
 export const CREATE_ROLE = `
 mutation CreateRole($createRoleInput: CreateRoleInput!) {
@@ -171,7 +171,7 @@ mutation DeleteRole($uniqueId: String!) {
   deleteRole(uniqueId: $uniqueId)
 }`
 
-// -- Campaigns --
+//  Campaigns
 
 export const CREATE_CAMPAIGN = `
 mutation CreateCampaign($input: CreateCampaignInput!) {
@@ -231,16 +231,12 @@ mutation ScheduleCampaign($input: ScheduleCampaignInput!) {
   }
 }`
 
-// -- Newsletter --
+//  Newsletter
 
 export const SUBSCRIBE_TO_NEWSLETTER = `
 mutation SubscribeToNewsletter {
   subscribeToNewsletter {
     message
-    data {
-      uniqueId
-      isActive
-    }
   }
 }`
 
@@ -248,21 +244,17 @@ export const UNSUBSCRIBE_FROM_NEWSLETTER = `
 mutation UnsubscribeFromNewsletter {
   unsubscribeFromNewsletter {
     message
-    data {
-      uniqueId
-      isActive
-    }
   }
 }`
 
-// -- Files --
+//  Files
 
 export const DELETE_FILE = `
 mutation DeleteFile($uniqueId: String!) {
   deleteFile(uniqueId: $uniqueId)
 }`
 
-// -- Visitors --
+//  Visitors
 
 export const TRACK_PAGE_VIEW = `
 mutation TrackPageView($input: TrackPageViewInput!) {
