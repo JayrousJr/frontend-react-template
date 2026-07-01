@@ -21,7 +21,9 @@ import {
   type Session,
 } from "@/services/account"
 import { formatRelativeTime } from "@/lib/format"
-
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+import i18n from "@/config/i18n"
 function getDeviceIcon(userAgent: string) {
   const ua = userAgent?.toLowerCase()
 
@@ -48,23 +50,21 @@ function getBrowserName(userAgent: string): string {
   if (userAgent?.includes("Chrome")) return "Chrome"
   if (userAgent?.includes("Safari")) return "Safari"
   if (userAgent?.includes("Opera") || userAgent?.includes("OPR")) return "Opera"
-  return "Unknown Browser"
+  return i18n.t("session.session_unkown_browser")
 }
 
 const SessionsTab = () => {
   const [sessions, setSessions] = useState<Session[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [revokingId, setRevokingId] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  console.log(sessions)
-
+  const { t } = useTranslation()
   useEffect(() => {
     async function load() {
       try {
         const data = await fetchMySessions()
         setSessions(data)
       } catch {
-        setError("Failed to load sessions")
+        toast.error("Failed to load sessions") //change
       } finally {
         setIsLoading(false)
       }
@@ -74,12 +74,12 @@ const SessionsTab = () => {
 
   async function handleRevoke(uniqueId: string) {
     setRevokingId(uniqueId)
-    setError(null)
     try {
       await revokeSession(uniqueId)
       setSessions((prev) => prev.filter((s) => s.uniqueId !== uniqueId))
+      toast.success("Session revoked successiful") //change
     } catch {
-      setError("Failed to revoke session")
+      toast.error("Failed to revoke session") //change
     } finally {
       setRevokingId(null)
     }
@@ -88,19 +88,19 @@ const SessionsTab = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Active Sessions</CardTitle>
-        <CardDescription>
-          Manage your active sessions. Revoke any session you don't recognize.
-        </CardDescription>
+        <CardTitle>{t("session.active_sessions")}</CardTitle>
+        <CardDescription>{t("session.session_text")}</CardDescription>
       </CardHeader>
 
       <CardContent>
-        {error && <p className="mb-4 text-sm text-destructive">{error}</p>}
-
         {isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading sessions...</p>
+          <p className="text-sm text-muted-foreground">
+            {t("session.loading_sessions")}
+          </p>
         ) : sessions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No active sessions.</p>
+          <p className="text-sm text-muted-foreground">
+            {t("session.no_session")}
+          </p>
         ) : (
           <div className="space-y-1">
             {sessions.map((session, index) => (
@@ -116,14 +116,18 @@ const SessionsTab = () => {
                         {getBrowserName(session.userAgent)}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {session.ipAddress} · Created{" "}
-                        {formatRelativeTime(session.createdAt)}
+                        {session.ipAddress}
+                        {t("created_text", {
+                          time: `${formatRelativeTime(session.createdAt)}`,
+                        })}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Badge variant="outline" className="text-xs">
-                      Expires {formatRelativeTime(session.expiresAt)}
+                      {t("expires_text", {
+                        time: `${formatRelativeTime(session.expiresAt)}`,
+                      })}
                     </Badge>
                     <Button
                       variant="ghost"

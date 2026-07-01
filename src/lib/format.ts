@@ -1,9 +1,4 @@
-/**
- * Formatting utility functions for dates, currency, numbers, text, etc.
- */
-
-// DATE FORMATTING
-
+import i18n from "@/config/i18n"
 /**
  * Format a date to a readable string (e.g., "Jan 15, 2024")
  */
@@ -59,7 +54,7 @@ export function formatDateTime(date: string | Date | null | undefined): string {
 }
 
 /**
- * Format a date to relative time (e.g., "2 hours ago", "3 days ago")
+  Format a date to relative time (e.g., "2 hours ago", "3 days ago")
  */
 export function formatRelativeTime(
   date: string | Date | null | undefined
@@ -80,17 +75,19 @@ export function formatRelativeTime(
   const diffInYears = Math.floor(diffInDays / 365)
 
   if (diffInSeconds < 60) {
-    return "Just now"
+    return i18n.t("time.justNow")
   } else if (diffInMinutes < 60) {
-    return `${diffInMinutes} ${diffInMinutes === 1 ? "minute" : "minutes"} ago`
+    return i18n.t("time.minute", {
+      count: diffInMinutes,
+    })
   } else if (diffInHours < 24) {
-    return `${diffInHours} ${diffInHours === 1 ? "hour" : "hours"} ago`
+    return i18n.t("time.hour", { count: diffInHours })
   } else if (diffInDays < 30) {
-    return `${diffInDays} ${diffInDays === 1 ? "day" : "days"} ago`
+    return i18n.t("time.day", { count: diffInDays })
   } else if (diffInMonths < 12) {
-    return `${diffInMonths} ${diffInMonths === 1 ? "month" : "months"} ago`
+    return i18n.t("time.day", { count: diffInMonths })
   } else {
-    return `${diffInYears} ${diffInYears === 1 ? "year" : "years"} ago`
+    return i18n.t("time.day", { count: diffInYears })
   }
 }
 
@@ -520,6 +517,7 @@ export function formatExpiry(date: string | Date | null | undefined): string {
   }
 }
 
+import { useTranslation } from "react-i18next"
 import { API_URL } from "./api-url"
 
 export function resolveImageUrl(

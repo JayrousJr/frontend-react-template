@@ -1,5 +1,8 @@
 {
   "greeting_message": "Hi, how are you?",
+  "created_text": "Created {{time}}  ",
+  "expires_text": "Expires {{time}} ",
+  "general_error": "An error has occured",
   "profile": {
     "dashboard": "Dashboard",
     "logout": "Log out",
@@ -10,6 +13,8 @@
     "role": "Role",
     "permission": "Permission",
     "name": "Name",
+    "first_name": "First name",
+    "last_name": "Last name",
     "email": "Email",
     "avatar": "My Photo",
     "locale": "Preferred Locale",
@@ -25,20 +30,19 @@
   },
   "notification": {
     "news_letter": "Newsletter",
+    "news_letter_message": "Receive product updates, announcements, and tips via email.",
+    "email_notification_message": " Get notified about account activity and security alerts.",
     "email_notification": "Email Notification",
     "push_notifiction": "Push Notification",
-    "active_session": "Active Session",
-    "session_mesage": "Manage your active sessions. Revoke any session you don't recognize.",
-    "loading_session_text": "Loading Sessions...",
-    "session_unkown_browser": "Unknown Browser",
-    "created_text": "Created {time}  ",
-    "expires_text": "Expires {time} "
+    "push_notifiction_message": " Receive rea -time notifications in your browser.",
+    "notification_mesage": "Manage how you receive updates and communications."
   },
   "password": {
     "change_password_message": "Change your password to keep your account secure.",
     "current_password": "Current Password",
     "new_password": "New Password",
-    "confirm_passsword": "Confirm Password"
+    "confirm_passsword": "Confirm Password",
+    "password_match_error": "Password confirmation do not match"
   },
   "role_permission": {
     "role_text": "Your assigned role determines your base level of access. Roles are managed by administrators.",
@@ -48,7 +52,24 @@
   },
   "session": {
     "session_text": "Manage your active sessions. Revoke any session you don't recognize.",
-    "loading_sessions": "Loading sessions..."
+    "loading_sessions": "Loading sessions...",
+    "active_sessions": "Active Sessions",
+    "no_sessions": "No active sessions",
+    "session_unkown_browser": "Unknown Browser"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minute_one": "{{count}} minute ago",
+    "minute_other": "{{count}} minutes ago",
+    "hour_one": "{{count}} hour ago",
+    "hour_other": "{{count}} hours ago",
+    "day_one": "{{count}} day ago",
+    "day_other": "{{count}} days ago",
+    "month_one": "{{count}} month ago",
+    "month_other": "{{count}} months ago",
+    "year_one": "{{count}} year ago",
+    "year_other": "{{count}} years ago",
+    "invalid_date": "Invalid Date"
   },
   "actions": {
     "save": "Save Changes",
@@ -59,6 +80,8 @@
     "upload": "Upload",
     "click_to_upload": "Click to Upload",
     "uploading": "Uploading...",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "update": "Update",
+    "updating": "Updating"
   }
 }

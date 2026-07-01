@@ -1,12 +1,14 @@
 {
   "greeting_message": "Habari, uko vipi?",
+  "created_text": "Imeundwa {{time}}  ",
+  "expires_text": "Inaisha {{time}} ",
   "profile": {
     "dashboard": "Dashibodi",
     "logout": "Toka",
     "notification": "Arifu",
     "account": "Akaunti",
     "my_profile": "Profaili Yangu",
-    "session": "Kipindi",
+    "session": "Vipindi",
     "role": "Jukumu",
     "permission": "Ruhusa",
     "name": "Jina",
@@ -15,30 +17,66 @@
     "locale": "Eneo Linalopendelewa",
     "language": "Lugha",
     "password": "Nenosiri",
-    "settings": "Mipagilio",
+    "settings": "Mipangilio",
     "loading_profile_text": "Inapakia Profaili...",
     "personal_profile": "Taarifa Binafsi",
-    "settings_message": "Simamia mipangilio na mapendeleo yako ya akaunti."
+    "settings_message": "Simamia mipangilio na mapendeleo yako ya akaunti.",
+    "personal_profile_text": "Sasisha picha yako na maelezo yako binafsi hapa.",
+    "other_Settings": "Mipangilio Mingine",
+    "other_Settings_text": "Weka mapendeleo yako binafsi hapa"
   },
   "notification": {
     "news_letter": "Barua ya Habari",
+    "news_letter_message": "Pokea masasisho ya bidhaa, matangazo na vidokezo kupitia barua pepe.",
     "email_notification": "Arifu ya Barua Pepe",
-    "push_notifiction": "Arifu ya Kikwazo",
-    "active_session": "Kipindi Amilifu",
-    "session_mesage": "Simamia vipindi vyako amilifu. Batilisha kipindi chochote usichokitambua.",
-    "loading_session_text": "Inapakia Vipindi...",
-    "session_unkown_browser": "Kivinjari Kisichojulikana",
-    "created_text": "Imeundwa {time}  ",
-    "expires_text": "Inaisha {time} "
+    "email_notification_message": "Pata arifa kuhusu shughuli za akaunti na arifa za usalama.",
+    "push_notifiction": "Arifu ya Kushinikiza",
+    "push_notifiction_message": " Pokea arifa za wakati halisi katika kivinjari chako.",
+    "notification_mesage": "Dhibiti jinsi unavyopokea masasisho na mawasiliano."
   },
   "password": {
     "change_password_message": "Badilisha nenosiri lako ili kuweka akaunti yako salama.",
     "current_password": "Nenosiri la Sasa",
     "new_password": "Nenosiri Jipya",
-    "confirm_passsword": "Thibitisha Nenosiri"
+    "confirm_passsword": "Thibitisha Nenosiri",
+    "password_match_error": "Uthibitishaji wa nenosiri haufanani"
   },
   "role_permission": {
     "role_text": "Jukumu lako ulilopewa huamua kiwango chako cha msingi cha ufikiaji. Majukumu yanasimamiwa na wasimamizi.",
-    "permission_text": "Ruhusa zote ulizopewa — kutoka kwa jukumu lako na ruhusa zozote za moja kwa moja. Hizi huamua ni vitendo gani unaweza kufanya."
+    "permission_text": "Ruhusa zote ulizopewa — kutoka kwa jukumu lako na ruhusa zozote za moja kwa moja. Hizi huamua ni vitendo gani unaweza kufanya.",
+    "no_permission": "Hakuna Ruhusa Iliyotolewa",
+    "direct_permission": "Ruhusa za moja kwa moja (pamoja na jukumu)"
+  },
+  "session": {
+    "session_text": "Simamia vipindi vyako amilifu. Batilisha kipindi chochote usichokitambua.",
+    "loading_sessions": "Inapakia vipindi...",
+    "active_sessions": "Vipindi Amilifu",
+    "no_sessions": "Hakuna vipindi amilifu",
+    "session_unkown_browser": "Kivinjari Kisichojulikana"
+  },
+  "time": {
+    "justNow": "Sasa hivi",
+    "minute_one": "Dakika {{count}} iliyopita",
+    "minute_other": "Dakika {{count}} zilizopita",
+    "hour_one": "Saa {{count}} iliyopita",
+    "hour_other": "Masaa {{count}} yaliyopita",
+    "day_one": "Siku {{count}} iliyopita",
+    "day_other": "Siku {{count}} zilizopita",
+    "month_one": "Mwezi {{count}} uliopita",
+    "month_other": "Miezi {{count}} iliyopita",
+    "year_one": "Mwaka {{count}} uliopita",
+    "year_other": "Miaka {{count}} iliyopita",
+    "invalid_date": "Tarehe Batili"
+  },
+  "actions": {
+    "save": "Hifadhi Mabadiliko",
+    "saving": "Inahifadhi...",
+    "send": "Tuma",
+    "sending": "Inatuma...",
+    "cancel": "Ghairi",
+    "upload": "Pakia",
+    "click_to_upload": "Bofya Kupakia",
+    "uploading": "Inapakia...",
+    "loading": "Inapakia..."
   }
 }

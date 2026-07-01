@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import { ShieldIcon, KeyIcon } from "lucide-react"
 import { fetchMyProfile, type Profile } from "@/services/account"
 import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
 
 function groupPermissions(
   permissions: { name: string; description: string }[]
@@ -27,7 +28,7 @@ function groupPermissions(
 const RolePermissionsTab = () => {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error] = useState<string | null>(null)
   const { t } = useTranslation()
   useEffect(() => {
     async function load() {
@@ -35,7 +36,7 @@ const RolePermissionsTab = () => {
         const data = await fetchMyProfile()
         setProfile(data.me)
       } catch {
-        setError("Failed to load role & permissions")
+        toast.error(`${t("general_error")}`)
       } finally {
         setIsLoading(false)
       }
@@ -60,7 +61,7 @@ const RolePermissionsTab = () => {
       <Card>
         <CardContent className="py-10">
           <p className="text-center text-sm text-destructive">
-            {error ?? "Failed to load"}
+            {error ?? `${t("general_error")}`}
           </p>
         </CardContent>
       </Card>

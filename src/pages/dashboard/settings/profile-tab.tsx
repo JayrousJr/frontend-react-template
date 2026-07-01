@@ -8,21 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { useAuth } from "@/context/auth-context"
 import { useAuthenticatedImage } from "@/hooks/use-authenticated-image"
 import {
   fetchMyProfile,
-  fetchSupportedLocales,
   updateProfile,
   uploadAvatar,
   type Profile,
@@ -31,14 +23,13 @@ import { UploadIcon } from "lucide-react"
 import { fetchMe } from "@/services/auth"
 import { t } from "i18next"
 import LanguageSwitcher from "@/components/languageSwitcher"
+import { toast } from "sonner"
 
 const ProfileTab = () => {
   const { user, refreshUser } = useAuth()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -55,7 +46,7 @@ const ProfileTab = () => {
         setLastName(profileData.me.lastName)
         setEmail(profileData.me.email)
       } catch {
-        setError("Failed to load profile")
+        toast.error(`${t("general_error")}`)
       } finally {
         setIsLoading(false)
       }
@@ -75,10 +66,9 @@ const ProfileTab = () => {
       })
       await fetchMe()
       await refreshUser()
-      setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      toast.success("Avatar Updated") //change
     } catch {
-      setError("Failed to upload avatar")
+      toast.error(`${t("general_error")}`)
     }
   }
 
@@ -86,8 +76,6 @@ const ProfileTab = () => {
     e.preventDefault()
     if (!profile) return
 
-    setError(null)
-    setSuccess(false)
     setIsSaving(true)
 
     try {
@@ -100,10 +88,9 @@ const ProfileTab = () => {
 
       await fetchMe()
       await refreshUser()
-      setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      toast.success("Profile Updated successiful") //change
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save changes")
+      toast.error(err instanceof Error ? err.message : `${t("general_error")}`)
     } finally {
       setIsSaving(false)
     }
@@ -114,8 +101,6 @@ const ProfileTab = () => {
     setFirstName(profile.firstName)
     setLastName(profile.lastName)
     setEmail(profile.email)
-    setError(null)
-    setSuccess(false)
   }
 
   if (isLoading) {
@@ -159,13 +144,6 @@ const ProfileTab = () => {
 
           <CardContent>
             <FieldGroup>
-              {error && <p className="text-sm text-destructive">{error}</p>}
-              {success && (
-                <p className="text-sm text-green-600">
-                  Profile updated successfully.
-                </p>
-              )}
-
               <Separator />
 
               <div className="grid grid-cols-[200px_1fr] items-center gap-x-8 gap-y-6">
@@ -174,13 +152,13 @@ const ProfileTab = () => {
                   <Input
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="First name"
+                    placeholder={t("profile.first_name")}
                     required
                   />
                   <Input
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Last name"
+                    placeholder={t("profile.last_name")}
                     required
                   />
                 </div>

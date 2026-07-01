@@ -8,43 +8,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Separator } from "@/components/ui/separator"
 import { changePassword } from "@/services/account"
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
 
 const PasswordTab = () => {
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
-
+  const { t } = useTranslation()
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError(null)
-    setSuccess(false)
 
     if (newPassword !== confirmPassword) {
-      setError("New passwords do not match.")
+      toast.error(`${t("password.password_match_error")}`)
       return
     }
 
     setIsSaving(true)
     try {
       await changePassword(currentPassword, newPassword)
-      setSuccess(true)
+
       setCurrentPassword("")
       setNewPassword("")
       setConfirmPassword("")
-      setTimeout(() => setSuccess(false), 3000)
+      toast.success("Password changed successiful") //change
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to change password")
+      toast.error(err instanceof Error ? err.message : `${t("general_error")}`)
     } finally {
       setIsSaving(false)
     }
@@ -61,24 +54,17 @@ const PasswordTab = () => {
             </CardDescription>
           </div>
           <Button type="submit" disabled={isSaving}>
-            {isSaving ? "Updating..." : "Update Password"}
+            {isSaving ? `${t("actions.updating")}` : `${t("actions.update")}`}
           </Button>
         </CardHeader>
 
         <CardContent>
           <FieldGroup>
-            {error && <p className="text-sm text-destructive">{error}</p>}
-            {success && (
-              <p className="text-sm text-green-600">
-                Password changed successfully.
-              </p>
-            )}
-
             <Separator />
 
             <div className="grid max-w-md gap-6">
               <Field>
-                <FieldLabel>Current Password</FieldLabel>
+                <FieldLabel> {t("password.current_password")}</FieldLabel>
                 <Input
                   type="password"
                   value={currentPassword}
@@ -88,20 +74,17 @@ const PasswordTab = () => {
               </Field>
 
               <Field>
-                <FieldLabel>New Password</FieldLabel>
+                <FieldLabel>{t("password.new_password")}</FieldLabel>
                 <Input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
                 />
-                <FieldDescription>
-                  Must be at least 8 characters long.
-                </FieldDescription>
               </Field>
 
               <Field>
-                <FieldLabel>Confirm New Password</FieldLabel>
+                <FieldLabel>{t("password.confirm_passsword")}</FieldLabel>
                 <Input
                   type="password"
                   value={confirmPassword}

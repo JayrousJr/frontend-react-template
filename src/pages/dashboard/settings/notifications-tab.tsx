@@ -14,20 +14,23 @@ import {
   subscribeToNewsletter,
   unsubscribeFromNewsletter,
 } from "@/services/account"
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
 
 const NotificationsTab = () => {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isToggling, setIsToggling] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
+  const { t } = useTranslation()
   useEffect(() => {
     async function load() {
       try {
         const sub = await fetchNewsletterSubscription()
         setIsSubscribed(sub !== null)
-      } catch {
-        setError("Failed to load subscription status")
+      } catch (err) {
+        toast.error(
+          err instanceof Error ? err.message : `${t("general_error")}`
+        )
       } finally {
         setIsLoading(false)
       }
@@ -37,16 +40,17 @@ const NotificationsTab = () => {
 
   async function handleToggle(checked: boolean) {
     setIsToggling(true)
-    setError(null)
     try {
       if (checked) {
         await subscribeToNewsletter()
+        toast.success("You have subscribed to our news letter") //change
       } else {
         await unsubscribeFromNewsletter()
+        toast.success("You have unsubscribed to our news letter") //change
       }
       setIsSubscribed(checked)
     } catch {
-      setError("Failed to update subscription")
+      toast.error(`${t("general_error")}`)
     } finally {
       setIsToggling(false)
     }
@@ -55,20 +59,18 @@ const NotificationsTab = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Notifications</CardTitle>
+        <CardTitle>{t("profile.notification")}</CardTitle>
         <CardDescription>
-          Manage how you receive updates and communications.
+          {t("notification.notification_mesage")}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {error && <p className="mb-4 text-sm text-destructive">{error}</p>}
-
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <FieldLabel>Newsletter</FieldLabel>
+              <FieldLabel>{t("notification.news_letter")}</FieldLabel>
               <p className="text-sm text-muted-foreground">
-                Receive product updates, announcements, and tips via email.
+                {t("notification.news_letter_message")}
               </p>
             </div>
             <Switch
@@ -82,9 +84,9 @@ const NotificationsTab = () => {
 
           <div className="flex items-center justify-between">
             <div>
-              <FieldLabel>Email Notifications</FieldLabel>
+              <FieldLabel>{t("notification.email_notification")}</FieldLabel>
               <p className="text-sm text-muted-foreground">
-                Get notified about account activity and security alerts.
+                {t("notification.email_notification_message")}
               </p>
             </div>
             <Switch checked={true} disabled />
@@ -94,9 +96,9 @@ const NotificationsTab = () => {
 
           <div className="flex items-center justify-between">
             <div>
-              <FieldLabel>Push Notifications</FieldLabel>
+              <FieldLabel>{t("notification.push_notifiction")}</FieldLabel>
               <p className="text-sm text-muted-foreground">
-                Receive real-time notifications in your browser.
+                {t("notification.push_notifiction_message")}
               </p>
             </div>
             <Switch checked={false} disabled />
