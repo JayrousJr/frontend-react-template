@@ -79,15 +79,16 @@ const ProfileTab = () => {
     setIsSaving(true)
 
     try {
-      await updateProfile({
+      const res = await updateProfile({
         uniqueId: profile.uniqueId,
         firstName,
         lastName,
         email,
       })
+      console.log(res)
 
-      await fetchMe()
-      await refreshUser()
+      // await fetchMe()
+      // await refreshUser()
       toast.success("Profile Updated successiful") //change
     } catch (err) {
       toast.error(err instanceof Error ? err.message : `${t("general_error")}`)

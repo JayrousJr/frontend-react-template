@@ -105,6 +105,7 @@ type UpdateProfileInput = {
 }
 type Subscription = {
   subscribeToNewsletter: { message: string }
+  unsubscribeFromNewsletter: { message: string }
 }
 export async function updateProfile(input: UpdateProfileInput): Promise<any> {
   await gql(UPDATE_USER, { updateUserInput: input })

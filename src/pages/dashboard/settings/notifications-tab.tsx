@@ -42,15 +42,15 @@ const NotificationsTab = () => {
     setIsToggling(true)
     try {
       if (checked) {
-        await subscribeToNewsletter()
-        toast.success("You have subscribed to our news letter") //change
+        const res = await subscribeToNewsletter()
+        toast.success(res.subscribeToNewsletter.message)
       } else {
-        await unsubscribeFromNewsletter()
-        toast.success("You have unsubscribed to our news letter") //change
+        const res = await unsubscribeFromNewsletter()
+        toast.success(res.unsubscribeFromNewsletter.message)
       }
       setIsSubscribed(checked)
-    } catch {
-      toast.error(`${t("general_error")}`)
+    } catch (err: any) {
+      toast.error(err.errors[0].message)
     } finally {
       setIsToggling(false)
     }

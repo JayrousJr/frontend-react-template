@@ -15,6 +15,7 @@ import { useAuth } from "@/context/auth-context"
 import { login } from "@/services/auth"
 import { ROUTES } from "@/routes/routeConstants"
 import { APP_NAME, logo } from "@/lib/exports"
+import { toast } from "sonner"
 
 export function LoginForm({
   className,
@@ -40,7 +41,7 @@ export function LoginForm({
 
       navigate(ROUTES.DASHBOARD, { replace: true })
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed")
+      toast.error(err instanceof Error ? err.message : "Login failed")
     } finally {
       setIsSubmitting(false)
     }
