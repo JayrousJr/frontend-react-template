@@ -24,6 +24,7 @@ import { useAuth } from "@/context/auth-context"
 import { useNavigate } from "react-router"
 import { ROUTES } from "@/routes/routeConstants"
 import { useAuthenticatedImage } from "@/hooks/use-authenticated-image"
+import { useTranslation } from "react-i18next"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
@@ -40,7 +41,7 @@ export function NavUser() {
     await logout()
     navigate(ROUTES.HOME, { replace: true })
   }
-
+  const { t } = useTranslation()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -87,17 +88,19 @@ export function NavUser() {
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => navigate(ROUTES.SETTINGS)}>
                 <BadgeCheckIcon />
-                Account
+                {t("profile.account")}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate(`${ROUTES.SETTINGS}?tab=notifications`)}>
+              <DropdownMenuItem
+                onClick={() => navigate(`${ROUTES.SETTINGS}?tab=notifications`)}
+              >
                 <BellIcon />
-                Notifications
+                {t("profile.notification")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOutIcon />
-              Log out
+              {t("profile.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

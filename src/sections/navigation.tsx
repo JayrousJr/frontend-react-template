@@ -80,7 +80,7 @@ export default function Navigation() {
           <DesktopMenu />
 
           <div className="flex items-center gap-2">
-            <LanguageSwitcher user={user} />
+            <LanguageSwitcher />
             <Button
               variant="outline"
               size="icon"

@@ -10,8 +10,11 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ShieldIcon, KeyIcon } from "lucide-react"
 import { fetchMyProfile, type Profile } from "@/services/account"
+import { useTranslation } from "react-i18next"
 
-function groupPermissions(permissions: { name: string; description: string }[]) {
+function groupPermissions(
+  permissions: { name: string; description: string }[]
+) {
   const groups: Record<string, { name: string; description: string }[]> = {}
   for (const perm of permissions) {
     const [group] = perm.name.split(".")
@@ -25,7 +28,7 @@ const RolePermissionsTab = () => {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
+  const { t } = useTranslation()
   useEffect(() => {
     async function load() {
       try {
@@ -45,7 +48,7 @@ const RolePermissionsTab = () => {
       <Card>
         <CardContent className="py-10">
           <p className="text-center text-sm text-muted-foreground">
-            Loading...
+            {t("actions.loading")}
           </p>
         </CardContent>
       </Card>
@@ -72,12 +75,9 @@ const RolePermissionsTab = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShieldIcon className="size-5" />
-            Role
+            {t("profile.role")}
           </CardTitle>
-          <CardDescription>
-            Your assigned role determines your base level of access. Roles are
-            managed by administrators.
-          </CardDescription>
+          <CardDescription>{t("role_permission.role_text")}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
@@ -97,17 +97,16 @@ const RolePermissionsTab = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <KeyIcon className="size-5" />
-            Permissions
+            {t("profile.permission")}
           </CardTitle>
           <CardDescription>
-            All permissions granted to you — from your role and any direct
-            grants. These determine what actions you can perform.
+            {t("role_permission.permission_text")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {profile.allPermissions.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No permissions assigned.
+              {t("role_permission.no_permission")}
             </p>
           ) : (
             <div className="space-y-6">
@@ -136,7 +135,7 @@ const RolePermissionsTab = () => {
           {profile.permissions.length > 0 && (
             <div className="mt-6">
               <h4 className="mb-3 text-sm font-medium text-muted-foreground">
-                Direct grants (in addition to role)
+                {t("role_permission.direct_permission")}
               </h4>
               <div className="flex flex-wrap gap-2">
                 {profile.permissions.map((perm) => (

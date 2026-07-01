@@ -5,6 +5,7 @@ import PasswordTab from "./password-tab"
 import SessionsTab from "./sessions-tab"
 import RolePermissionsTab from "./role-permissions-tab"
 import NotificationsTab from "./notifications-tab"
+import { useTranslation } from "react-i18next"
 
 const TABS = [
   "profile",
@@ -21,23 +22,29 @@ const SettingsPage = () => {
   function handleTabChange(value: string) {
     setSearchParams({ tab: value }, { replace: true })
   }
-
+  const { t } = useTranslation()
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {t("profile.settings")}
+        </h1>
         <p className="text-sm text-muted-foreground">
-          Manage your account settings and preferences.
+          {t("profile.settings_message")}
         </p>
       </div>
 
       <Tabs value={activeTab} onValueChange={handleTabChange}>
         <TabsList variant="line">
-          <TabsTrigger value="profile">My Profile</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="sessions">Sessions</TabsTrigger>
-          <TabsTrigger value="role-permissions">Role & Permissions</TabsTrigger>
+          <TabsTrigger value="profile">{t("profile.my_profile")}</TabsTrigger>
+          <TabsTrigger value="password">{t("profile.password")}</TabsTrigger>
+          <TabsTrigger value="notifications">
+            {t("profile.notification")}
+          </TabsTrigger>
+          <TabsTrigger value="sessions">{t("profile.session")}</TabsTrigger>
+          <TabsTrigger value="role-permissions">
+            {t("profile.role")} & {t("profile.permission")}
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">

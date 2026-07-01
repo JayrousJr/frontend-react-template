@@ -29,11 +29,12 @@ import {
 } from "@/services/account"
 import { UploadIcon } from "lucide-react"
 import { fetchMe } from "@/services/auth"
+import { t } from "i18next"
+import LanguageSwitcher from "@/components/languageSwitcher"
 
 const ProfileTab = () => {
   const { user, refreshUser } = useAuth()
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [locales, setLocales] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -42,23 +43,17 @@ const ProfileTab = () => {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
-  const [preferredLocale, setPreferredLocale] = useState("")
 
   const avatarSrc = useAuthenticatedImage(user?.avatar)
 
   useEffect(() => {
     async function load() {
       try {
-        const [profileData, localeData] = await Promise.all([
-          fetchMyProfile(),
-          fetchSupportedLocales(),
-        ])
+        const [profileData] = await Promise.all([fetchMyProfile()])
         setProfile(profileData.me)
-        setLocales(localeData)
         setFirstName(profileData.me.firstName)
         setLastName(profileData.me.lastName)
         setEmail(profileData.me.email)
-        setPreferredLocale(profileData.me.preferredLocale)
       } catch {
         setError("Failed to load profile")
       } finally {
@@ -78,7 +73,7 @@ const ProfileTab = () => {
         uniqueId: profile.uniqueId,
         avatarUniqueId,
       })
-      const updatedUser = await fetchMe()
+      await fetchMe()
       await refreshUser()
       setSuccess(true)
       setTimeout(() => setSuccess(false), 3000)
@@ -96,12 +91,11 @@ const ProfileTab = () => {
     setIsSaving(true)
 
     try {
-      const res = await updateProfile({
+      await updateProfile({
         uniqueId: profile.uniqueId,
         firstName,
         lastName,
         email,
-        preferredLocale,
       })
 
       await fetchMe()
@@ -120,7 +114,6 @@ const ProfileTab = () => {
     setFirstName(profile.firstName)
     setLastName(profile.lastName)
     setEmail(profile.email)
-    setPreferredLocale(profile.preferredLocale)
     setError(null)
     setSuccess(false)
   }
@@ -130,7 +123,9 @@ const ProfileTab = () => {
       <Card>
         <CardContent className="py-10">
           <div className="flex items-center justify-center">
-            <p className="text-sm text-muted-foreground">Loading profile...</p>
+            <p className="text-sm text-muted-foreground">
+              {t("profile.loading_profile_text")}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -142,130 +137,127 @@ const ProfileTab = () => {
     : ""
 
   return (
-    <form onSubmit={handleSave}>
-      <Card>
+    <>
+      <form onSubmit={handleSave}>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>{t("profile.personal_profile")}</CardTitle>
+              <CardDescription>
+                {t("profile.personal_profile_text")}
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                {t("actions.cancel")}
+              </Button>
+              <Button type="submit" disabled={isSaving}>
+                {isSaving ? `${t("actions.saving")}` : `${t("actions.save")}`}
+              </Button>
+            </div>
+          </CardHeader>
+
+          <CardContent>
+            <FieldGroup>
+              {error && <p className="text-sm text-destructive">{error}</p>}
+              {success && (
+                <p className="text-sm text-green-600">
+                  Profile updated successfully.
+                </p>
+              )}
+
+              <Separator />
+
+              <div className="grid grid-cols-[200px_1fr] items-center gap-x-8 gap-y-6">
+                <FieldLabel>{t("profile.name")}</FieldLabel>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="First name"
+                    required
+                  />
+                  <Input
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Last name"
+                    required
+                  />
+                </div>
+
+                <Separator className="col-span-2" />
+
+                <FieldLabel>{t("profile.email")}</FieldLabel>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+
+                <Separator className="col-span-2" />
+
+                <div>
+                  <FieldLabel>{t("profile.avatar")}</FieldLabel>
+                </div>
+                <div className="flex items-center gap-6">
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage
+                      src={avatarSrc}
+                      alt={`${firstName} ${lastName}`}
+                    />
+                    <AvatarFallback className="text-lg">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <label className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-dashed px-6 py-4 text-sm text-muted-foreground transition-colors hover:border-foreground/50 hover:text-foreground">
+                    <UploadIcon className="size-5" />
+                    <span> {t("actions.click_to_upload")}</span>
+                    <span className="text-xs">
+                      SVG, PNG or JPG (max. 800x400px)
+                    </span>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleAvatarUpload}
+                    />
+                  </label>
+                </div>
+
+                <Separator className="col-span-2" />
+
+                <FieldLabel>{t("profile.role")}</FieldLabel>
+                <Input
+                  value={profile?.role.name ?? ""}
+                  disabled
+                  className="bg-muted"
+                />
+              </div>
+            </FieldGroup>
+          </CardContent>
+        </Card>
+      </form>
+      <Card className="mt-2">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Personal Info</CardTitle>
+            <CardTitle>{t("profile.other_Settings")}</CardTitle>
             <CardDescription>
-              Update your photo and personal details here.
+              {t("profile.other_Settings_text")}
             </CardDescription>
           </div>
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSaving}>
-              {isSaving ? "Saving..." : "Save Changes"}
-            </Button>
-          </div>
         </CardHeader>
-
         <CardContent>
-          <FieldGroup>
-            {error && <p className="text-sm text-destructive">{error}</p>}
-            {success && (
-              <p className="text-sm text-green-600">
-                Profile updated successfully.
-              </p>
-            )}
-
-            <Separator />
-
-            <div className="grid grid-cols-[200px_1fr] items-center gap-x-8 gap-y-6">
-              <FieldLabel>Name</FieldLabel>
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="First name"
-                  required
-                />
-                <Input
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Last name"
-                  required
-                />
-              </div>
-
-              <Separator className="col-span-2" />
-
-              <FieldLabel>Email</FieldLabel>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-
-              <Separator className="col-span-2" />
-
-              <div>
-                <FieldLabel>Your Photo</FieldLabel>
-                <p className="text-xs text-muted-foreground">
-                  This will be displayed on your profile.
-                </p>
-              </div>
-              <div className="flex items-center gap-6">
-                <Avatar className="h-16 w-16">
-                  <AvatarImage
-                    src={avatarSrc}
-                    alt={`${firstName} ${lastName}`}
-                  />
-                  <AvatarFallback className="text-lg">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-                <label className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-dashed px-6 py-4 text-sm text-muted-foreground transition-colors hover:border-foreground/50 hover:text-foreground">
-                  <UploadIcon className="size-5" />
-                  <span>Click to upload</span>
-                  <span className="text-xs">
-                    SVG, PNG or JPG (max. 800x400px)
-                  </span>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleAvatarUpload}
-                  />
-                </label>
-              </div>
-
-              <Separator className="col-span-2" />
-
-              <FieldLabel>Role</FieldLabel>
-              <Input
-                value={profile?.role.name ?? ""}
-                disabled
-                className="bg-muted"
-              />
-
-              <Separator className="col-span-2" />
-
-              <FieldLabel>Preferred Locale</FieldLabel>
-              <Field>
-                <Select
-                  value={preferredLocale}
-                  onValueChange={setPreferredLocale}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a locale" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locales.map((locale) => (
-                      <SelectItem key={locale} value={locale}>
-                        {locale}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-            </div>
-          </FieldGroup>
+          <Separator className="col-span-2" />
+          <div className="flex items-center gap-2 py-1">
+            <span className="">
+              {t("profile.locale")}/ {t("profile.language")}
+            </span>
+            <LanguageSwitcher />
+          </div>
         </CardContent>
       </Card>
-    </form>
+    </>
   )
 }
 

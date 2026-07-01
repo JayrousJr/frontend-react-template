@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import LanguageSwitcher from "@/components/languageSwitcher"
 import { useTheme } from "@/components/theme-provider"
 import {
   Breadcrumb,
@@ -75,6 +76,7 @@ const DashboardLayout = () => {
               </Breadcrumb>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
+              <LanguageSwitcher />
               <Button
                 variant="outline"
                 size="icon"

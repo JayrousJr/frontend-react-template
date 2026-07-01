@@ -2,6 +2,63 @@
   "greeting_message": "Hi, how are you?",
   "profile": {
     "dashboard": "Dashboard",
-    "logout": "Log out"
+    "logout": "Log out",
+    "notification": "Notification",
+    "account": "Account",
+    "my_profile": "My Profile",
+    "session": "Sessions",
+    "role": "Role",
+    "permission": "Permission",
+    "name": "Name",
+    "email": "Email",
+    "avatar": "My Photo",
+    "locale": "Preferred Locale",
+    "language": "Language",
+    "password": "Password",
+    "settings": "Settings",
+    "loading_profile_text": "Loading Profile...",
+    "personal_profile": "Personal Information",
+    "settings_message": "Manage your account settings and preferences.",
+    "personal_profile_text": "Update your photo and personal details here.",
+    "other_Settings": "Other Settings",
+    "other_Settings_text": "Set your personal preferences  here"
+  },
+  "notification": {
+    "news_letter": "Newsletter",
+    "email_notification": "Email Notification",
+    "push_notifiction": "Push Notification",
+    "active_session": "Active Session",
+    "session_mesage": "Manage your active sessions. Revoke any session you don't recognize.",
+    "loading_session_text": "Loading Sessions...",
+    "session_unkown_browser": "Unknown Browser",
+    "created_text": "Created {time}  ",
+    "expires_text": "Expires {time} "
+  },
+  "password": {
+    "change_password_message": "Change your password to keep your account secure.",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_passsword": "Confirm Password"
+  },
+  "role_permission": {
+    "role_text": "Your assigned role determines your base level of access. Roles are managed by administrators.",
+    "permission_text": "All permissions granted to you — from your role and any direct grants. These determine what actions you can perform.",
+    "no_permission": "No permission Assigned",
+    "direct_permission": "Direct grants (in addition to role)"
+  },
+  "session": {
+    "session_text": "Manage your active sessions. Revoke any session you don't recognize.",
+    "loading_sessions": "Loading sessions..."
+  },
+  "actions": {
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "send": "Send",
+    "sending": "Sending...",
+    "cancel": "Cancel",
+    "upload": "Upload",
+    "click_to_upload": "Click to Upload",
+    "uploading": "Uploading...",
+    "loading": "Loading..."
   }
 }

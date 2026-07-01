@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { useTranslation } from "react-i18next" // 👈 Added
+import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,14 +14,10 @@ import { languageLogos } from "@/config/languageLogos"
 import { fetchMe } from "@/services/auth"
 import { toast } from "sonner"
 
-type LanguageSwitcherProps = {
-  user: User | null
-}
-
-const LanguageSwitcher = ({ user }: LanguageSwitcherProps) => {
-  const { i18n } = useTranslation() // 👈 Connects i18n reactively to React
+const LanguageSwitcher = () => {
+  const { i18n } = useTranslation()
   const [locales, setLocale] = useState<string[]>([])
-  const { refreshUser } = useAuth()
+  const { refreshUser, user } = useAuth()
 
   // 1. Fetch available backend locales on mount
   useEffect(() => {
@@ -43,15 +39,14 @@ const LanguageSwitcher = ({ user }: LanguageSwitcherProps) => {
     }
   }, [user?.preferredLocale, i18n])
 
-  // Get the current active icon (prioritizes user object, falls back to active i18n system string)
+  // Get the current active icon
   const activeLocale = user?.preferredLocale || i18n.resolvedLanguage || "en"
   const currentLogo = languageLogos[activeLocale]
 
   async function handleLanguageChange(language: string) {
-    // Optimistically update local UI immediately
     await i18n.changeLanguage(language)
 
-    if (!user) return // Stop if visitor is unauthenticated
+    if (!user) return
 
     try {
       await updateProfile({
@@ -59,7 +54,7 @@ const LanguageSwitcher = ({ user }: LanguageSwitcherProps) => {
         preferredLocale: language,
       })
       await fetchMe()
-      await refreshUser() // This pulls down the updated user object with new preferredLocale
+      await refreshUser()
       toast.success("Language preference updated successfully!")
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred")
