@@ -85,11 +85,10 @@ const ProfileTab = () => {
         lastName,
         email,
       })
-      console.log(res)
 
       // await fetchMe()
       // await refreshUser()
-      toast.success("Profile Updated successiful") //change
+      toast.success(res.updateUser.message)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : `${t("general_error")}`)
     } finally {

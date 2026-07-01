@@ -64,7 +64,7 @@ const SessionsTab = () => {
         const data = await fetchMySessions()
         setSessions(data)
       } catch {
-        toast.error("Failed to load sessions") //change
+        toast.error(`${t("general_error")}`)
       } finally {
         setIsLoading(false)
       }
@@ -77,9 +77,9 @@ const SessionsTab = () => {
     try {
       await revokeSession(uniqueId)
       setSessions((prev) => prev.filter((s) => s.uniqueId !== uniqueId))
-      toast.success("Session revoked successiful") //change
+      toast.success(`${t("session.revoke_session_message")}`)
     } catch {
-      toast.error("Failed to revoke session") //change
+      toast.error(`${t("general_error")}`)
     } finally {
       setRevokingId(null)
     }

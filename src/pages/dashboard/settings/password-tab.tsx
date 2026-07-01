@@ -30,12 +30,14 @@ const PasswordTab = () => {
 
     setIsSaving(true)
     try {
-      await changePassword(currentPassword, newPassword)
+      const res = await changePassword(currentPassword, newPassword)
 
       setCurrentPassword("")
       setNewPassword("")
       setConfirmPassword("")
-      toast.success("Password changed successiful") //change
+      console.log(res)
+
+      toast.success(res?.changePassword.message) //change
     } catch (err) {
       toast.error(err instanceof Error ? err.message : `${t("general_error")}`)
     } finally {

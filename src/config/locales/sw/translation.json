@@ -52,7 +52,8 @@
     "loading_sessions": "Inapakia vipindi...",
     "active_sessions": "Vipindi Amilifu",
     "no_sessions": "Hakuna vipindi amilifu",
-    "session_unkown_browser": "Kivinjari Kisichojulikana"
+    "session_unkown_browser": "Kivinjari Kisichojulikana",
+    "revoke_session_message": "Kipindi kimefutwa kikamilifu tayari."
   },
   "time": {
     "justNow": "Sasa hivi",

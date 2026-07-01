@@ -30,10 +30,14 @@ mutation ResetPassword($token: String!, $password: String!) {
   resetPassword(token: $token, password: $password)
 }`
 
-export const CHANGE_PASSWORD = `
+export const CHANGE_PASSWORD = ` 
 mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
-  changePassword(currentPassword: $currentPassword, newPassword: $newPassword)
-}`
+  changePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
+    message
+  }
+}
+
+  `
 
 export const RESEND_VERIFICATION = `
 mutation ResendVerification($email: String!) {
@@ -72,26 +76,6 @@ export const UPDATE_USER = `
 mutation UpdateUser($updateUserInput: UpdateUserInput!) {
   updateUser(updateUserInput: $updateUserInput) {
     message
-    data {
-      uniqueId
-      email
-      firstName
-      lastName
-      preferredLocale
-      role {
-        uniqueId
-        name
-      }
-      allPermissions {
-        uniqueId
-        name
-      }
-      avatar {
-        uniqueId
-        size
-        uri
-      }
-    }
   }
 }`
 

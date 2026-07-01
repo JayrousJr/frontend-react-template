@@ -108,14 +108,14 @@ type Subscription = {
   unsubscribeFromNewsletter: { message: string }
 }
 export async function updateProfile(input: UpdateProfileInput): Promise<any> {
-  await gql(UPDATE_USER, { updateUserInput: input })
+  return await gql(UPDATE_USER, { updateUserInput: input })
 }
 
 export async function changePassword(
   currentPassword: string,
   newPassword: string
 ): Promise<void> {
-  await gql(CHANGE_PASSWORD, { currentPassword, newPassword })
+  return await gql(CHANGE_PASSWORD, { currentPassword, newPassword })
 }
 
 export async function revokeSession(uniqueId: string): Promise<void> {

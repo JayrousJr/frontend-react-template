@@ -55,7 +55,8 @@
     "loading_sessions": "Loading sessions...",
     "active_sessions": "Active Sessions",
     "no_sessions": "No active sessions",
-    "session_unkown_browser": "Unknown Browser"
+    "session_unkown_browser": "Unknown Browser",
+    "revoke_session_message": "Session Revoked Successiful"
   },
   "time": {
     "justNow": "Just now",

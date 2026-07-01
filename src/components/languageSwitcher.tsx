@@ -49,13 +49,12 @@ const LanguageSwitcher = () => {
     if (!user) return
 
     try {
-      await updateProfile({
+      const res = await updateProfile({
         uniqueId: user.uniqueId,
         preferredLocale: language,
       })
-      await fetchMe()
       await refreshUser()
-      toast.success("Language preference updated successfully!")
+      toast.success(res.updateUser.message)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An error occurred")
     }
