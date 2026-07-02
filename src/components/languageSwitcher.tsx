@@ -9,9 +9,8 @@ import {
 } from "./ui/dropdown-menu"
 import { Button } from "./ui/button"
 import { fetchSupportedLocales, updateProfile } from "@/services/account"
-import { useAuth, type User } from "@/context/auth-context"
+import { useAuth } from "@/context/auth-context"
 import { languageLogos } from "@/config/languageLogos"
-import { fetchMe } from "@/services/auth"
 import { toast } from "sonner"
 
 const LanguageSwitcher = () => {
@@ -40,10 +39,11 @@ const LanguageSwitcher = () => {
   }, [user?.preferredLocale, i18n])
 
   // Get the current active icon
-  const activeLocale = user?.preferredLocale || i18n.resolvedLanguage || "en"
+  const activeLocale = localStorage.getItem("preferredLocale") || "en"
   const currentLogo = languageLogos[activeLocale]
 
   async function handleLanguageChange(language: string) {
+    localStorage.setItem("preferredLocale", language)
     await i18n.changeLanguage(language)
 
     if (!user) return
@@ -63,7 +63,11 @@ const LanguageSwitcher = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9 cursor-pointer rounded-full"
+        >
           <img
             src={currentLogo}
             alt={`${activeLocale} flag`}

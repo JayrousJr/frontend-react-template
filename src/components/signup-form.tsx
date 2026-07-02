@@ -21,12 +21,13 @@ import { ROUTES } from "@/routes/routeConstants"
 import { cn } from "@/lib/utils"
 import { logo } from "@/lib/exports"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const { t } = useTranslation()
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
@@ -60,15 +61,14 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     return (
       <Card {...props}>
         <CardHeader>
-          <CardTitle>Check your email</CardTitle>
+          <CardTitle>{t("auth.email_verification_title")}</CardTitle>
           <CardDescription>
-            We&apos;ve sent a verification link to your email address. Please
-            verify your account before logging in.
+            {t("auth.email_verification_message")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Link to={ROUTES.LOGIN}>
-            <Button className="w-full">Go to login</Button>
+            <Button className="w-full">{t("auth.login")}</Button>
           </Link>
         </CardContent>
       </Card>
@@ -82,14 +82,19 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Create your account</h1>
+                <h1 className="text-2xl font-bold">
+                  {t("auth.signup_message")}
+                </h1>
                 <p className="text-sm text-balance text-muted-foreground">
-                  Fill details below to create your account
+                  {t("auth.signup_sub_message")}
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Field>
-                  <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                  <FieldLabel htmlFor="firstName">
+                    {" "}
+                    {t("profile.first_name")}
+                  </FieldLabel>
                   <Input
                     id="firstName"
                     name="firstName"
@@ -99,7 +104,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   />
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                  <FieldLabel htmlFor="lastName">
+                    {t("profile.last_name")}
+                  </FieldLabel>
                   <Input
                     id="lastName"
                     name="lastName"
@@ -110,22 +117,22 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </Field>
               </div>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">{t("auth.email")}</FieldLabel>
                 <Input
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="user@example.com"
+                  placeholder="johndoe@email.com"
                   required
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor="password">{t("auth.password")}</FieldLabel>
                 <Input id="password" name="password" type="password" required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="confirmPassword">
-                  Confirm Password
+                  {t("auth.confirm_password")}
                 </FieldLabel>
                 <Input
                   id="confirmPassword"
@@ -138,22 +145,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <FieldGroup>
                 <Field>
                   <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Creating account..." : "Create Account"}
+                    {isSubmitting ? t("auth.creating") : t("auth.signup")}
                   </Button>
-                  <FieldDescription className="px-6 text-center">
-                    Already have an account?{" "}
-                    <Link
-                      to={ROUTES.LOGIN}
-                      className="underline underline-offset-4"
-                    >
-                      Sign in
-                    </Link>
-                  </FieldDescription>
                 </Field>
               </FieldGroup>
 
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
+                {t("auth.social_login_message")}
               </FieldSeparator>
               <Field className="grid grid-cols-3 gap-4">
                 <Button variant="outline" type="button">
@@ -185,7 +183,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Already have an account? <Link to={ROUTES.LOGIN}>Log in</Link>
+                {t("auth.have_account")}{" "}
+                <Link to={ROUTES.LOGIN}>{t("auth.login")}</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
@@ -201,8 +200,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        {t("auth.terms_message")} <a href="#">{t("auth.terms")}</a> {t("and")}{" "}
+        <a href="#">{t("auth.policy")}</a>.
       </FieldDescription>
     </div>
   )

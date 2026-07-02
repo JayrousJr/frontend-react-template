@@ -3,6 +3,32 @@
   "created_text": "Created {{time}}  ",
   "expires_text": "Expires {{time}} ",
   "general_error": "An error has occured",
+  "more": "More",
+  "and": "and",
+  "auth": {
+    "login_message": "Welcome again ",
+    "login_sub_message": "Login at {{company}}",
+    "signup_message": "Create your account",
+    "signup_sub_message": " Fill details below to create your account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "forgot_password": "Forgot your password?",
+    "have_no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "signup": "Sign up",
+    "login": "Log in",
+    "terms_message": "By clicking continue, you agree to our ",
+    "social_login_message": "Or continue with",
+    "logging": "Logging...",
+    "creating": "Creating Account...",
+    "terms": "Terms of Service",
+    "policy": "Privacy Policy",
+    "email_verification_title": "Check your email",
+    "email_verification_message": " We've sent a verification link to your email address. Please verify your account before logging in.",
+    "logout_message": "You are logged Out successiful"
+  },
   "profile": {
     "dashboard": "Dashboard",
     "logout": "Log out",
@@ -84,5 +110,41 @@
     "loading": "Loading...",
     "update": "Update",
     "updating": "Updating..."
+  },
+  "footer": {
+    "maker_message": "{{year}} Built by {{company}}",
+    "right_reserved_message": "All rights reserved",
+    "newsletter_subscription": "Subscribe to our news letter"
+  },
+  "dashboards": {
+    "navMain": {
+      "title": "Platform",
+      "dashboard": {
+        "title": "Dashboard",
+        "history": "History",
+        "analytics": "Analytics"
+      },
+      "settings": {
+        "title": "Settings",
+        "system_settings": "System Settings",
+        "my_account": "My Account"
+      },
+      "role_permissions": {
+        "title": "Roles & Permissions",
+        "roles": "Roles",
+        "permissions": "Permissions"
+      }
+    },
+    "subMain": {
+      "title": "Departments",
+      "action": {
+        "view": "View ",
+        "save": "Save ",
+        "delete": "Delete "
+      },
+      "multimedia": "Multimedia",
+      "software": "Software",
+      "design": "Graphics Design"
+    }
   }
 }

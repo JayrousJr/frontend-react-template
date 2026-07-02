@@ -28,6 +28,7 @@ export async function fetchMe(): Promise<User> {
   const data = await gql<MeResponse>(ME)
   const me = data.me
 
+  localStorage.setItem("preferredLocale", me.preferredLocale)
   return {
     uniqueId: me.uniqueId,
     email: me.email,

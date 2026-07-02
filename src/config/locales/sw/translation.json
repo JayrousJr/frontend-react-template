@@ -1,66 +1,95 @@
 {
-  "greeting_message": "Habari, uko vipi?",
-  "created_text": "Imeundwa {{time}}  ",
-  "expires_text": "Inaisha {{time}} ",
+  "greeting_message": "Habari, hujambo?",
+  "created_text": "Imeundwa {{time}}",
+  "expires_text": "Inaisha muda {{time}}",
+  "general_error": "Hitilafu imetokea",
+  "more": "Zaidi",
+  "and": "na",
+  "auth": {
+    "login_message": "Karibu tena",
+    "login_sub_message": "Ingia kwenye {{company}}",
+    "signup_message": "Fungua akaunti yako",
+    "signup_sub_message": "Jaza taarifa hapa chini kufungua akaunti yako",
+    "name": "Jina",
+    "email": "Barua pepe",
+    "password": "Nenosiri",
+    "confirm_password": "Thibitisha nenosiri",
+    "forgot_password": "Umesahau nenosiri lako?",
+    "have_no_account": "Huna akaunti?",
+    "have_account": "Una akaunti tayari?",
+    "signup": "Jisajili",
+    "login": "Ingia",
+    "terms_message": "Kwa kubofya endelea, unakubaliana na",
+    "social_login_message": "Au endelea na",
+    "logging": "Inaingia...",
+    "creating": "Inafungua Akaunti...",
+    "terms": "Masharti ya Huduma",
+    "policy": "Sera ya Faragha",
+    "email_verification_title": "Angalia barua pepe yako",
+    "email_verification_message": "Tumetuma kiungo cha uthibitisho kwenye anwani yako ya barua pepe. Tafadhali thibitisha akaunti yako kabla ya kuingia.",
+    "logout_message": "Umetoka kikamilifu."
+  },
   "profile": {
     "dashboard": "Dashibodi",
     "logout": "Toka",
-    "notification": "Arifu",
+    "notification": "Arifa",
     "account": "Akaunti",
-    "my_profile": "Profaili Yangu",
+    "my_profile": "Wasifu Wangu",
     "session": "Vipindi",
-    "role": "Jukumu",
+    "role": "Wajibu",
     "permission": "Ruhusa",
     "name": "Jina",
+    "first_name": "Jina la kwanza",
+    "last_name": "Jina la ukoo",
     "email": "Barua pepe",
     "avatar": "Picha Yangu",
-    "locale": "Eneo Linalopendelewa",
+    "locale": "Mfumo wa Lugha Unaopendelewa",
     "language": "Lugha",
     "password": "Nenosiri",
     "settings": "Mipangilio",
-    "loading_profile_text": "Inapakia Profaili...",
+    "loading_profile_text": "Inapakia Wasifu...",
     "personal_profile": "Taarifa Binafsi",
-    "settings_message": "Simamia mipangilio na mapendeleo yako ya akaunti.",
-    "personal_profile_text": "Sasisha picha yako na maelezo yako binafsi hapa.",
+    "settings_message": "Simamia mipangilio na mapendeleo ya akaunti yako.",
+    "personal_profile_text": "Sasisha picha yako na taarifa zako binafsi hapa.",
     "other_Settings": "Mipangilio Mingine",
     "other_Settings_text": "Weka mapendeleo yako binafsi hapa"
   },
   "notification": {
-    "news_letter": "Barua ya Habari",
-    "news_letter_message": "Pokea masasisho ya bidhaa, matangazo na vidokezo kupitia barua pepe.",
-    "email_notification": "Arifu ya Barua Pepe",
-    "email_notification_message": "Pata arifa kuhusu shughuli za akaunti na arifa za usalama.",
-    "push_notifiction": "Arifu ya Kushinikiza",
-    "push_notifiction_message": " Pokea arifa za wakati halisi katika kivinjari chako.",
-    "notification_mesage": "Dhibiti jinsi unavyopokea masasisho na mawasiliano."
+    "news_letter": "Jarida",
+    "news_letter_message": "Pokea taarifa za bidhaa, matangazo, na vidokezo kupitia barua pepe.",
+    "email_notification_message": "Pata arifa kuhusu shughuli za akaunti na tahadhari za usalama.",
+    "email_notification": "Arifa za Barua Pepe",
+    "push_notifiction": "Arifa za Papo kwa Papo",
+    "push_notifiction_message": "Pokea arifa za wakati halisi kwenye kivinjari chako.",
+    "notification_mesage": "Simamia jinsi unavyopokea masasisho na mawasiliano."
   },
   "password": {
     "change_password_message": "Badilisha nenosiri lako ili kuweka akaunti yako salama.",
     "current_password": "Nenosiri la Sasa",
     "new_password": "Nenosiri Jipya",
     "confirm_passsword": "Thibitisha Nenosiri",
-    "password_match_error": "Uthibitishaji wa nenosiri haufanani"
+    "password_match_error": "Uthibitisho wa nenosiri haulingani"
   },
   "role_permission": {
-    "role_text": "Jukumu lako ulilopewa huamua kiwango chako cha msingi cha ufikiaji. Majukumu yanasimamiwa na wasimamizi.",
-    "permission_text": "Ruhusa zote ulizopewa — kutoka kwa jukumu lako na ruhusa zozote za moja kwa moja. Hizi huamua ni vitendo gani unaweza kufanya.",
-    "no_permission": "Hakuna Ruhusa Iliyotolewa",
-    "direct_permission": "Ruhusa za moja kwa moja (pamoja na jukumu)"
+    "role_text": "Wajibu uliopewa unaamua kiwango chako cha msingi cha ufikiaji. Wajibu husimamiwa na wasimamizi.",
+    "permission_text": "Ruhusa zote ulizopewa — kutoka kwa wajibu wako na ruhusa zozote za moja kwa moja. Hizi ndizo huamua ni vitendo gani unavyoweza kufanya.",
+    "no_permission": "Hakuna Ruhusa Iliyowekwa",
+    "direct_permission": "Ruhusa za moja kwa moja (zaidi ya wajibu)"
   },
   "session": {
-    "session_text": "Simamia vipindi vyako amilifu. Batilisha kipindi chochote usichokitambua.",
+    "session_text": "Simamia vipindi vyako vinavyoendelea. Batilisha kipindi chochote usichokitambua.",
     "loading_sessions": "Inapakia vipindi...",
-    "active_sessions": "Vipindi Amilifu",
-    "no_sessions": "Hakuna vipindi amilifu",
+    "active_sessions": "Vipindi Vinavyoendelea",
+    "no_sessions": "Hakuna vipindi vinavyoendelea",
     "session_unkown_browser": "Kivinjari Kisichojulikana",
-    "revoke_session_message": "Kipindi kimefutwa kikamilifu tayari."
+    "revoke_session_message": "Kipindi Kimebatilishwa Kikamilifu"
   },
   "time": {
     "justNow": "Sasa hivi",
     "minute_one": "Dakika {{count}} iliyopita",
     "minute_other": "Dakika {{count}} zilizopita",
     "hour_one": "Saa {{count}} iliyopita",
-    "hour_other": "Masaa {{count}} yaliyopita",
+    "hour_other": "Saa {{count}} zilizopita",
     "day_one": "Siku {{count}} iliyopita",
     "day_other": "Siku {{count}} zilizopita",
     "month_one": "Mwezi {{count}} uliopita",
@@ -81,5 +110,41 @@
     "loading": "Inapakia...",
     "update": "Sasisha",
     "updating": "Inasasisha..."
+  },
+  "footer": {
+    "maker_message": "{{year}} Imejengwa na {{company}}",
+    "right_reserved_message": "Haki zote zimehifadhiwa",
+    "newsletter_subscription": "Jiandikishe kwa jarida letu"
+  },
+  "dashboards": {
+    "navMain": {
+      "title": "Jukwaa",
+      "dashboard": {
+        "title": "Dashibodi",
+        "history": "Historia",
+        "analytics": "Uchambuzi"
+      },
+      "settings": {
+        "title": "Mipangilio",
+        "system_settings": "Mipangilio ya Mfumo",
+        "my_account": "Akaunti Yangu"
+      },
+      "role_permissions": {
+        "title": "Wajibu na Ruhusa",
+        "roles": "Wajibu",
+        "permissions": "Ruhusa"
+      }
+    },
+    "subMain": {
+      "title": "Idara",
+      "action": {
+        "view": "Tazama",
+        "save": "Hifadhi",
+        "delete": "Futa"
+      },
+      "multimedia": "Multimedia",
+      "software": "Programu",
+      "design": "Muundo wa Michoro"
+    }
   }
 }

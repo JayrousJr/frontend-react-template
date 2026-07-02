@@ -5,11 +5,13 @@ import { cn } from "@/lib/utils"
 import { ROUTES } from "@/routes/routeConstants"
 import { subscribeToNewsletter } from "@/services/account"
 import type { ErrorResponse } from "@/services/auth"
+import { useTranslation } from "react-i18next"
 import { Link } from "react-router"
 import { toast } from "sonner"
 
 const Footer = () => {
   const { isAuthenticated } = useAuth()
+  const { t } = useTranslation()
   const handleNewsLetterSubscription = async () => {
     try {
       const res = await subscribeToNewsletter()
@@ -44,9 +46,7 @@ const Footer = () => {
                 ))}
             </div>
             <div className={cn(isAuthenticated ? "block" : "hidden")}>
-              <Button onClick={handleNewsLetterSubscription}>
-                Subscribe to our news letter
-              </Button>
+              <Button onClick={handleNewsLetterSubscription}>{}</Button>
             </div>
           </div>
 
@@ -74,9 +74,13 @@ const Footer = () => {
 
         <div className="mx-auto my-12 flex max-w-7xl items-center justify-between border-t border-border pt-4">
           <p className="text-xs sm:text-sm">
-            © {new Date().getFullYear()} Built by {APP_NAME}
+            ©
+            {t("footer.maker_message", {
+              year: new Date().getFullYear(),
+              company: APP_NAME,
+            })}{" "}
           </p>
-          <p className="text-sm">All right reserved.</p>
+          <p className="text-sm">{t("footer.right_reserved_message")}</p>
         </div>
       </footer>
     </div>

@@ -1,10 +1,14 @@
 import type { NavItemType } from "@/components/ui/navigation-menu"
 import {
+  AudioLinesIcon,
   BarChart,
   CodeIcon,
+  Computer,
   DollarSign,
   Facebook,
   FileText,
+  FrameIcon,
+  GalleryVerticalEndIcon,
   Github,
   GlobeIcon,
   Handshake,
@@ -15,17 +19,22 @@ import {
   Linkedin,
   PlugIcon,
   RotateCcw,
+  Settings2Icon,
   Shield,
   Star,
+  TerminalIcon,
+  TerminalSquareIcon,
   Twitter,
   UserPlusIcon,
   Users,
+  Video,
   Youtube,
 } from "lucide-react"
-
+import { ROUTES } from "@/routes/routeConstants"
+import i18n from "@/config/i18n"
+const t = i18n.t
 export const logo = "../logo.png"
 export const APP_NAME = import.meta.env.VITE_APP_NAME as string
-
 export const productLinks: NavItemType[] = [
   {
     title: "Website Builder",
@@ -233,5 +242,105 @@ export const footerDetails = {
     },
   ],
   footerParagraph:
-    "PrebuiltUI helps you build faster by transforming your design vision into fully functional, production-ready UI components.",
+    "Your first stop shop for all Software services from Simple website development to complex automated systems",
 }
+
+// App sidebar
+export const teams = [
+  {
+    name: "Acme Inc",
+    logo: GalleryVerticalEndIcon,
+    plan: "Enterprise",
+  },
+  {
+    name: "Acme Corp.",
+    logo: AudioLinesIcon,
+    plan: "Startup",
+  },
+  {
+    name: "Evil Corp.",
+    logo: TerminalIcon,
+    plan: "Free",
+  },
+]
+
+export const navMain: {
+  title: () => string
+  url: string
+  icon?: any
+  isActive?: boolean
+  items?: {
+    title: () => string
+    url: string
+  }[]
+}[] = [
+  {
+    title: () => t("dashboards.navMain.dashboard.title"),
+    url: "#",
+    icon: TerminalSquareIcon,
+    isActive: true,
+    items: [
+      {
+        title: () => t("dashboards.navMain.dashboard.history"),
+        url: "#",
+      },
+      {
+        title: () => t("dashboards.navMain.dashboard.analytics"),
+        url: "#",
+      },
+    ],
+  },
+
+  {
+    title: () => t("dashboards.navMain.settings.title"),
+    url: "#",
+    icon: Settings2Icon,
+    items: [
+      {
+        title: () => t("dashboards.navMain.settings.system_settings"),
+        url: "#",
+      },
+      {
+        title: () => t("dashboards.navMain.settings.my_account"),
+        url: ROUTES.SETTINGS,
+      },
+    ],
+  },
+  {
+    title: () => t("dashboards.navMain.role_permissions.title"),
+    url: "#",
+    icon: Settings2Icon,
+    items: [
+      {
+        title: () => t("dashboards.navMain.role_permissions.roles"),
+        url: "#",
+      },
+      {
+        title: () => t("dashboards.navMain.role_permissions.permissions"),
+        url: "#",
+      },
+    ],
+  },
+]
+
+export const navSubmain: {
+  name: () => string
+  url: string
+  icon: any
+}[] = [
+  {
+    name: () => t("dashboards.subMain.design"),
+    url: "#",
+    icon: FrameIcon,
+  },
+  {
+    name: () => t("dashboards.subMain.software"),
+    url: "#",
+    icon: Computer,
+  },
+  {
+    name: () => t("dashboards.subMain.multimedia"),
+    url: "#",
+    icon: Video,
+  },
+]

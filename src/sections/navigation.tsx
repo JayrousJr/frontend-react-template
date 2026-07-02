@@ -127,9 +127,10 @@ export default function Navigation() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  className="cursor-pointer"
                   onClick={() => navigate("/auth/login")}
                 >
-                  Sign In
+                  {t("auth.login")}
                 </Button>
                 {/* <Button size="sm" onClick={() => navigate("/auth/register")}>
                   Get Started
@@ -233,8 +234,8 @@ function MobileView() {
         </Button>
       </SheetTrigger>
       <SheetContent
-        className="w-full gap-0 bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/80"
-        showClose={false}
+        // showClose={false}
+        className="w-full gap-0 bg-background/95 backdrop-blur-lg supports-backdrop-filter:bg-background/80"
       >
         <div className="flex h-14 items-center justify-end border-b px-4">
           <SheetClose asChild>

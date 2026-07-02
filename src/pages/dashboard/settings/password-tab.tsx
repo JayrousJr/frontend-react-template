@@ -30,14 +30,12 @@ const PasswordTab = () => {
 
     setIsSaving(true)
     try {
-      const res = await changePassword(currentPassword, newPassword)
+      const res = (await changePassword(currentPassword, newPassword)) as any
 
       setCurrentPassword("")
       setNewPassword("")
       setConfirmPassword("")
-      console.log(res)
-
-      toast.success(res?.changePassword.message) //change
+      toast.success(res?.changePassword.message)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : `${t("general_error")}`)
     } finally {
@@ -50,9 +48,9 @@ const PasswordTab = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Password</CardTitle>
+            <CardTitle>{t("profile.password")}</CardTitle>
             <CardDescription>
-              Change your password to keep your account secure.
+              {t("password.change_password_message")}
             </CardDescription>
           </div>
           <Button type="submit" disabled={isSaving}>

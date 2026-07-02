@@ -16,6 +16,7 @@ import { login } from "@/services/auth"
 import { ROUTES } from "@/routes/routeConstants"
 import { APP_NAME, logo } from "@/lib/exports"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
 
 export function LoginForm({
   className,
@@ -25,7 +26,7 @@ export function LoginForm({
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const { t } = useTranslation()
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
@@ -41,7 +42,7 @@ export function LoginForm({
 
       navigate(ROUTES.DASHBOARD, { replace: true })
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Login failed")
+      toast.error(err instanceof Error ? err.message : t("general_error"))
     } finally {
       setIsSubmitting(false)
     }
@@ -54,29 +55,33 @@ export function LoginForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
+                <h1 className="text-2xl font-bold">
+                  {t("auth.login_message")}
+                </h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to your {APP_NAME}
+                  {t("auth.login_sub_message", { company: APP_NAME })}
                 </p>
               </div>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">{t("auth.email")}</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   name="email"
-                  placeholder="user@example.com"
+                  placeholder="johndoe@email.com"
                   required
                 />
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">
+                    {t("auth.password")}
+                  </FieldLabel>
                   <Link
                     to={ROUTES.FORGOT_PASSWORD}
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    Forgot your password?
+                    {t("auth.forgot_password")}
                   </Link>
                 </div>
                 <Input id="password" name="password" type="password" required />
@@ -86,20 +91,11 @@ export function LoginForm({
 
               <Field>
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Logging in..." : "Login"}
+                  {isSubmitting ? t("auth.logging") : t("auth.login")}
                 </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
-                  <Link
-                    to={ROUTES.REGISTER}
-                    className="underline underline-offset-4"
-                  >
-                    Sign up
-                  </Link>
-                </FieldDescription>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
+                {t("auth.social_login_message")}
               </FieldSeparator>
               <Field className="grid grid-cols-3 gap-4">
                 <Button variant="outline" type="button">
@@ -131,8 +127,8 @@ export function LoginForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account?{" "}
-                <Link to={ROUTES.REGISTER}>Sign up</Link>
+                {t("auth.have_no_account")}{" "}
+                <Link to={ROUTES.REGISTER}>{t("auth.signup")}</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
@@ -148,8 +144,8 @@ export function LoginForm({
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        {t("auth.terms_message")} <a href="#">{t("auth.terms")}</a> {t("and")}{" "}
+        <a href="#">{t("auth.policy")}</a>.
       </FieldDescription>
     </div>
   )
